@@ -4,7 +4,7 @@ import "./App.css";
 
 export default function App() {
   const wave = () => {
-    console.log('Wave!');
+    console.log('Wave at me!');
   };
 
   return (
