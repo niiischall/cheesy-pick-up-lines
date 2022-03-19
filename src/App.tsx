@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { ethers } from "ethers";
-import { Heart } from "phosphor-react";
+import { Heart, Plugs } from "phosphor-react";
 import {
   TextField,
+  Button,
   IconButton,
   LinearProgress,
   styled,
@@ -157,6 +158,7 @@ export default function App() {
       });
       console.log("Connected", accounts[0]);
       setCurrentAccount(accounts[0]);
+      getWaves();
     } catch (error) {
       console.log(error);
     }
@@ -193,33 +195,46 @@ export default function App() {
             cheesy pickup lines may be corny, but they’re sure to make someone
             crack a smile if you’re bold enough to try them out!
           </p>
+        </div>
+        <div className="wallet-connect">
           {!currentAccount && (
-            <p>Connect your Ethereum wallet and wave at me!</p>
+            <Button
+              variant="contained"
+              startIcon={<Plugs size={32} weight="light" />}
+              onClick={() => connectWallet()}
+              style={{
+                width: 250,
+                height: 64,
+                margin: "0px auto",
+                fontFamily: "Poppins",
+                fontWeight: 500,
+              }}
+              color="secondary"
+            >
+              Connect Wallet
+            </Button>
           )}
         </div>
-        {!currentAccount && (
-          <button className="waveButton" onClick={connectWallet}>
-            Connect Wallet
-          </button>
+        {currentAccount && (
+          <form className="form-box" onSubmit={handleSubmit}>
+            <CssTextField
+              id="message-field"
+              label="Get super cheesy!"
+              multiline
+              maxRows={4}
+              value={message}
+              variant="outlined"
+              style={{ width: 320 }}
+              onChange={handleChange}
+            />
+            <IconButton
+              type="submit"
+              style={{ marginLeft: 10, backgroundColor: "transparent" }}
+            >
+              <Heart size={32} weight="fill" color="#ffffff" />
+            </IconButton>
+          </form>
         )}
-        <form className="form-box" onSubmit={handleSubmit}>
-          <CssTextField
-            id="message-field"
-            label="Get super cheesy!"
-            multiline
-            maxRows={4}
-            value={message}
-            variant="outlined"
-            style={{ width: 320 }}
-            onChange={handleChange}
-          />
-          <IconButton
-            type="submit"
-            style={{ marginLeft: 10, backgroundColor: "transparent" }}
-          >
-            <Heart size={32} weight="fill" color="#ffffff" />
-          </IconButton>
-        </form>
         {loading && <LinearProgress color="secondary" />}
         <div className="message-container">
           {allWaves.map((wave: any, index: number) => {

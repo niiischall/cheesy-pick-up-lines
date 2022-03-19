@@ -120,6 +120,23 @@ body {
   }
 }
 
+.wallet-connect {
+  margin: 24px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wallet-connect p {
+  font-size: 24px;
+  font-weight: 700;
+  color: #D1495B;
+}
+
+.wallet-button {
+  background-color: orange;
+}
+
 .form-box {
   color: #ffffff;
   margin: 28px 0px;
