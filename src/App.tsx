@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
+import { Heart } from "phosphor-react";
+import {
+  TextField,
+  IconButton,
+  LinearProgress,
+  styled,
+} from "@material-ui/core";
 import "./App.css";
 
 import abi from "./utils/WavePortal.json";
@@ -10,14 +17,50 @@ declare global {
   }
 }
 
-const contractAddress = "0x7BB32d508fAEF1621301cE313093EC0D8D831520";
+const CssTextField = styled(TextField)({
+  "& textarea": {
+    color: "#ffffff",
+    fontFamily: "Poppins",
+    fontWeight: 500,
+  },
+  "& label": {
+    color: "white",
+    fontFamily: "Poppins",
+    fontWeight: 500,
+    marginRight: "5px",
+  },
+  "& label.Mui-focused": {
+    color: "white",
+    fontFamily: "Poppins",
+    fontWeight: 500,
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "yellow",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderWidth: "2.5px",
+      borderColor: "white",
+    },
+    "&:hover fieldset": {
+      borderColor: "yellow",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "yellow",
+    },
+  },
+});
+
+const contractAddress = "0xC9A2992E7303334cEe47Ae3779de2bd0CF84140F";
 const contractABI = abi.abi;
 
 export default function App() {
   const [currentAccount, setCurrentAccount] = useState("");
   const [allWaves, setAllWaves] = useState<any[]>([]);
+  const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const wave = async (message: string) => {
+  const wave = async () => {
     try {
       const { ethereum } = window;
       if (ethereum) {
@@ -29,12 +72,21 @@ export default function App() {
           signer
         );
 
+        setLoading(true);
         let waveTxn = await wavePortalContract.wave(message);
         await waveTxn.wait();
+        waveSuccess();
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
+  };
+
+  const waveSuccess = () => {
+    setLoading(false);
+    setMessage("");
+    getWaves();
   };
 
   const getWaves = async () => {
@@ -75,6 +127,7 @@ export default function App() {
         return;
       } else {
         console.log("We have the ethereum object", ethereum);
+        getWaves();
       }
       const accounts = await ethereum.request({ method: "eth_accounts" });
       if (accounts.length !== 0) {
@@ -110,47 +163,92 @@ export default function App() {
     checkIfWalletIsConnected();
   }, []);
 
-  useEffect(() => {
-    const { ethereum } = window;
-    if (ethereum) {
-      getWaves();
-    }
-  }, []);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMessage(event.target.value);
+  };
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    wave();
+  };
 
   return (
-    <div className="mainContainer">
-      <div className="dataContainer">
-        <div className="header">👋 Hey there!</div>
-
-        <div className="bio">
-          <p>I am Nischal and I build stuff that live on the internet.</p>
-          <p>Connect your Ethereum wallet and wave at me!</p>
+    <main className="mainContainer">
+      <header className="header">
+        <div className="super-header">
+          <span>
+            Get a chance to win ₹500 worth of ETH! Send an OG 🧀 pick-up line
+            before 31st of March, 2022.
+          </span>
         </div>
-        <button className="waveButton" onClick={() => wave("A message!")}>
-          Wave at Me
-        </button>
+        <h1 className="heading">🧀 Cheesy Pick-Up Lines</h1>
+      </header>
+      <div className="dataContainer">
+        <div className="bio">
+          <p>
+            Can’t find the right words to say to that special someone? These
+            cheesy pickup lines may be corny, but they’re sure to make someone
+            crack a smile if you’re bold enough to try them out!
+          </p>
+          {!currentAccount && (
+            <p>Connect your Ethereum wallet and wave at me!</p>
+          )}
+        </div>
         {!currentAccount && (
           <button className="waveButton" onClick={connectWallet}>
             Connect Wallet
           </button>
         )}
-        {allWaves.map((wave: any, index: number) => {
-          return (
-            <div
-              key={index}
-              style={{
-                backgroundColor: "OldLace",
-                marginTop: "16px",
-                padding: "8px",
-              }}
-            >
-              <div>Address: {wave.address}</div>
-              <div>Time: {wave.timestamp.toString()}</div>
-              <div>Message: {wave.message}</div>
-            </div>
-          );
-        })}
+        <form className="form-box" onSubmit={handleSubmit}>
+          <CssTextField
+            id="message-field"
+            label="Get super cheesy!"
+            multiline
+            maxRows={4}
+            value={message}
+            variant="outlined"
+            style={{ width: 320 }}
+            onChange={handleChange}
+          />
+          <IconButton
+            type="submit"
+            style={{ marginLeft: 10, backgroundColor: "transparent" }}
+          >
+            <Heart size={32} weight="fill" color="#ffffff" />
+          </IconButton>
+        </form>
+        {loading && <LinearProgress color="secondary" />}
+        <div className="message-container">
+          {allWaves.map((wave: any, index: number) => {
+            const d = new Date(wave.timestamp.toString());
+            return (
+              <div key={index} className="message-box">
+                <div className="message">
+                  <p className="message-text">
+                    <strong>🕰️ When?</strong>
+                    <br />
+                    <em>{d.toLocaleString("en-IN")}</em>
+                  </p>
+                </div>
+                <div className="message">
+                  <p className="message-text">
+                    <strong>🧀</strong>
+                    <br />
+                    {wave.message}
+                  </p>
+                </div>
+                <div className="message">
+                  <p className="message-text-address">
+                    <strong>🧑‍🍳 Chef</strong>
+                    <br />
+                    {wave.address}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
