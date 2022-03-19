@@ -177,7 +177,7 @@ export default function App() {
       <header className="header">
         <div className="super-header">
           <span>
-            Get a chance to win ₹500 worth of ETH! Send an OG 🧀 pick-up line
+            Stand a chance to win ₹500 worth of ETH! Send an OG 🧀 pick-up line
             before 31st of March, 2022.
           </span>
         </div>
@@ -225,7 +225,7 @@ export default function App() {
               <div key={index} className="message-box">
                 <div className="message">
                   <p className="message-text">
-                    <strong>🕰️ When?</strong>
+                    <strong>🕰️</strong>
                     <br />
                     <em>{d.toLocaleString("en-IN")}</em>
                   </p>
@@ -239,7 +239,7 @@ export default function App() {
                 </div>
                 <div className="message">
                   <p className="message-text-address">
-                    <strong>🧑‍🍳 Chef</strong>
+                    <strong>✍🏻</strong>
                     <br />
                     {wave.address}
                   </p>
