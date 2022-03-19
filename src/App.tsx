@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { ethers } from "ethers";
 import { Heart } from "phosphor-react";
 import {
@@ -119,28 +119,31 @@ export default function App() {
     }
   };
 
-  const checkIfWalletIsConnected = async () => {
-    try {
-      const { ethereum } = window;
-      if (!ethereum) {
-        console.log("Make sure you have metamask!");
-        return;
-      } else {
-        console.log("We have the ethereum object", ethereum);
-        getWaves();
+  const checkIfWalletIsConnected = useCallback(
+    () => async () => {
+      try {
+        const { ethereum } = window;
+        if (!ethereum) {
+          console.log("Make sure you have metamask!");
+          return;
+        } else {
+          console.log("We have the ethereum object", ethereum);
+          getWaves();
+        }
+        const accounts = await ethereum.request({ method: "eth_accounts" });
+        if (accounts.length !== 0) {
+          const account = accounts[0];
+          console.log("Found an authorized account:", account);
+          setCurrentAccount(account);
+        } else {
+          console.log("No authorized account found");
+        }
+      } catch (error) {
+        console.log(error);
       }
-      const accounts = await ethereum.request({ method: "eth_accounts" });
-      if (accounts.length !== 0) {
-        const account = accounts[0];
-        console.log("Found an authorized account:", account);
-        setCurrentAccount(account);
-      } else {
-        console.log("No authorized account found");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    },
+    []
+  );
 
   const connectWallet = async () => {
     try {
@@ -161,7 +164,7 @@ export default function App() {
 
   useEffect(() => {
     checkIfWalletIsConnected();
-  }, []);
+  }, [checkIfWalletIsConnected]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
