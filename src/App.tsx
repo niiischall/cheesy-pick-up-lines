@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import "./App.css";
 
-import abi from "./utils/WavePortal.json";
+import abi from "./utils/PickUpLines.json";
 
 declare global {
   interface Window {
@@ -18,7 +18,7 @@ declare global {
   }
 }
 
-const CssTextField = styled(TextField)({
+const CustomTextField = styled(TextField)({
   "& textarea": {
     color: "#ffffff",
     fontFamily: "Poppins",
@@ -52,31 +52,31 @@ const CssTextField = styled(TextField)({
   },
 });
 
-const contractAddress = "0x090D0D5f51A21069d404d9BDD58F049f8C373846";
+const contractAddress = "0x4Eb1d90D5e3dE52194Ef0d3b237E8441D2D2b225";
 const contractABI = abi.abi;
 
 export default function App() {
   const [currentAccount, setCurrentAccount] = useState("");
-  const [allWaves, setAllWaves] = useState<any[]>([]);
+  const [allLines, setAllLines] = useState<any[]>([]);
   const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const wave = async () => {
+  const pickup = async () => {
     try {
       const { ethereum } = window;
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        const wavePortalContract = new ethers.Contract(
+        const contract = new ethers.Contract(
           contractAddress,
           contractABI,
           signer
         );
 
         setLoading(true);
-        let waveTxn = await wavePortalContract.wave(message);
-        await waveTxn.wait();
-        waveSuccess();
+        let contractTxn = await contract.newLine(message);
+        await contractTxn.wait();
+        pickupSuccess();
       }
     } catch (error) {
       console.log(error);
@@ -84,34 +84,34 @@ export default function App() {
     }
   };
 
-  const waveSuccess = () => {
+  const pickupSuccess = () => {
     setLoading(false);
     setMessage("");
-    getWaves();
+    getLines();
   };
 
-  const getWaves = async () => {
+  const getLines = async () => {
     try {
       const { ethereum } = window;
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
-        const wavePortalContract = new ethers.Contract(
+        const Contract = new ethers.Contract(
           contractAddress,
           contractABI,
           signer
         );
 
-        const waves = await wavePortalContract.getAllWaves();
-        let wavesCleaned: any[] = [];
-        waves.forEach((wave: any) => {
-          wavesCleaned.push({
-            address: wave.waver,
-            timestamp: new Date(wave.timestamp * 1000),
-            message: wave.message,
+        const lines = await Contract.getAllLines();
+        let linesCleaned: any[] = [];
+        lines.forEach((line: any) => {
+          linesCleaned.push({
+            address: line.writer,
+            timestamp: new Date(line.timestamp * 1000),
+            message: line.message,
           });
         });
-        setAllWaves(wavesCleaned);
+        setAllLines(linesCleaned);
       } else {
         console.log("Ethereum object doesn't exist!");
       }
@@ -129,7 +129,7 @@ export default function App() {
           return;
         } else {
           console.log("We have the ethereum object", ethereum);
-          getWaves();
+          getLines();
         }
         const accounts = await ethereum.request({ method: "eth_accounts" });
         if (accounts.length !== 0) {
@@ -158,7 +158,7 @@ export default function App() {
       });
       console.log("Connected", accounts[0]);
       setCurrentAccount(accounts[0]);
-      getWaves();
+      getLines();
     } catch (error) {
       console.log(error);
     }
@@ -174,7 +174,7 @@ export default function App() {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    wave();
+    pickup();
   };
 
   return (
@@ -217,7 +217,7 @@ export default function App() {
         </div>
         {currentAccount && (
           <form className="form-box" onSubmit={handleSubmit}>
-            <CssTextField
+            <CustomTextField
               id="message-field"
               label="Get super cheesy!"
               multiline
@@ -237,8 +237,8 @@ export default function App() {
         )}
         {loading && <LinearProgress color="secondary" />}
         <div className="message-container">
-          {allWaves.map((wave: any, index: number) => {
-            const d = new Date(wave.timestamp.toString());
+          {allLines.map((line: any, index: number) => {
+            const d = new Date(line.timestamp.toString());
             return (
               <div key={index} className="message-box">
                 <div className="message">
@@ -252,14 +252,14 @@ export default function App() {
                   <p className="message-text">
                     <strong>🧀</strong>
                     <br />
-                    {wave.message}
+                    {line.message}
                   </p>
                 </div>
                 <div className="message">
                   <p className="message-text-address">
                     <strong>✍🏻</strong>
                     <br />
-                    {wave.address}
+                    {line.address}
                   </p>
                 </div>
               </div>
