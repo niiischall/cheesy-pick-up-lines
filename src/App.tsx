@@ -108,7 +108,7 @@ export default function App() {
           linesCleaned.push({
             address: line.writer,
             timestamp: new Date(line.timestamp * 1000),
-            message: line.message,
+            message: line.line,
           });
         });
         setAllLines(linesCleaned);
@@ -252,7 +252,7 @@ export default function App() {
                   <p className="message-text">
                     <strong>🧀</strong>
                     <br />
-                    {line.message}
+                    {line.line}
                   </p>
                 </div>
                 <div className="message">
