@@ -52,17 +52,20 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-const contractAddress = "0x4bd6c509ADDC06F2B9ccB69e47bf96bAD55aF9f7";
+const contractAddress = "0xDD3EAf6e60417880d05E8B46014Fc9fF488Dc9ce";
 const contractABI = abi.abi;
 
 export default function App() {
   const [currentAccount, setCurrentAccount] = useState("");
   const [allLines, setAllLines] = useState<any[]>([]);
   const [message, setMessage] = useState<string>("");
+
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const pickup = async () => {
     try {
+      setError("");
       const { ethereum } = window;
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
@@ -76,22 +79,22 @@ export default function App() {
         setLoading(true);
         let contractTxn = await contract.newLine(message, { gasLimit: 300000 });
         await contractTxn.wait();
-        pickupSuccess();
+        setLoading(false);
+        setMessage("");
       }
     } catch (error: any) {
-      console.log(error);
+      setError(
+        "Failed transaction 🤨! Wanna try again?"
+      );
+      setMessage("");
       setLoading(false);
     }
-  };
-
-  const pickupSuccess = () => {
-    setLoading(false);
-    setMessage("");
   };
 
   const getLines = useCallback(
     () => async () => {
       try {
+        setError("");
         const { ethereum } = window;
         if (ethereum) {
           const provider = new ethers.providers.Web3Provider(ethereum);
@@ -116,6 +119,9 @@ export default function App() {
           console.log("Ethereum object doesn't exist!");
         }
       } catch (error) {
+        setError(
+          "Failed transaction 🤨! Wanna try again?"
+        );
         console.log(error);
       }
     },
@@ -124,6 +130,7 @@ export default function App() {
 
   const checkIfWalletIsConnected = useCallback(async () => {
     try {
+      setError("");
       const { ethereum } = window;
       if (!ethereum) {
         console.log("Make sure you have metamask!");
@@ -140,12 +147,16 @@ export default function App() {
         console.log("No authorized account found");
       }
     } catch (error) {
+      setError(
+        "Failed transaction 🤨! Wanna try again?"
+      );
       console.log(error);
     }
-  }, []);
+  }, [getLines]);
 
   const connectWallet = async () => {
     try {
+      setError("");
       const { ethereum } = window;
       if (!ethereum) {
         alert("Get MetaMask!");
@@ -157,6 +168,9 @@ export default function App() {
       console.log("Connected", accounts[0]);
       setCurrentAccount(accounts[0]);
     } catch (error) {
+      setError(
+        "Failed transaction 🤨! Wanna try again?"
+      );
       console.log(error);
     }
   };
@@ -210,7 +224,7 @@ export default function App() {
         <div className="super-header">
           <span>
             Stand a chance to win ₹500 worth of ETH! Send an OG 🧀 pick-up line
-            before 31st of March, 2022.
+            before 30th of April, 2022.
           </span>
         </div>
         <h1 className="heading">🧀 Cheesy Pick-Up Lines</h1>
@@ -262,6 +276,7 @@ export default function App() {
             </IconButton>
           </form>
         )}
+        {error && <p className="error-message">{error}</p>}
         {loading && <LinearProgress color="secondary" />}
         <div className="message-container">
           {allLines.map((line: any, index: number) => {

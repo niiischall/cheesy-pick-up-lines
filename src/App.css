@@ -120,6 +120,13 @@ body {
   }
 }
 
+.error-message {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+}
+
 .wallet-connect {
   margin: 24px 0px;
   display: flex;
@@ -216,5 +223,6 @@ body {
   .message-text-address {
     text-align: left;
     width: 50%;
+    margin: 0px;
   }
 }
