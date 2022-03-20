@@ -52,7 +52,7 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-const contractAddress = "0xB9B54279A5c1e9AB5478eA71990A01Ce29Dd63da";
+const contractAddress = "0x4bd6c509ADDC06F2B9ccB69e47bf96bAD55aF9f7";
 const contractABI = abi.abi;
 
 export default function App() {
@@ -74,11 +74,11 @@ export default function App() {
         );
 
         setLoading(true);
-        let contractTxn = await contract.newLine(message);
+        let contractTxn = await contract.newLine(message, { gasLimit: 300000 });
         await contractTxn.wait();
         pickupSuccess();
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
       setLoading(false);
     }
@@ -87,57 +87,33 @@ export default function App() {
   const pickupSuccess = () => {
     setLoading(false);
     setMessage("");
-    getLines();
   };
 
-  const getLines = async () => {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const Contract = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-
-        const lines = await Contract.getAllLines();
-        let linesCleaned: any[] = [];
-        lines.forEach((line: any) => {
-          linesCleaned.push({
-            address: line.writer,
-            timestamp: new Date(line.timestamp * 1000),
-            line: line.line,
-          });
-        });
-        setAllLines(linesCleaned);
-      } else {
-        console.log("Ethereum object doesn't exist!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const checkIfWalletIsConnected = useCallback(
+  const getLines = useCallback(
     () => async () => {
       try {
         const { ethereum } = window;
-        if (!ethereum) {
-          console.log("Make sure you have metamask!");
-          return;
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const Contract = new ethers.Contract(
+            contractAddress,
+            contractABI,
+            signer
+          );
+
+          const lines = await Contract.getAllLines();
+          let linesCleaned: any[] = [];
+          lines.forEach((line: any) => {
+            linesCleaned.push({
+              address: line.writer,
+              timestamp: new Date(line.timestamp * 1000),
+              line: line.line,
+            });
+          });
+          setAllLines(linesCleaned);
         } else {
-          console.log("We have the ethereum object", ethereum);
-          getLines();
-        }
-        const accounts = await ethereum.request({ method: "eth_accounts" });
-        if (accounts.length !== 0) {
-          const account = accounts[0];
-          console.log("Found an authorized account:", account);
-          setCurrentAccount(account);
-        } else {
-          console.log("No authorized account found");
+          console.log("Ethereum object doesn't exist!");
         }
       } catch (error) {
         console.log(error);
@@ -145,6 +121,28 @@ export default function App() {
     },
     []
   );
+
+  const checkIfWalletIsConnected = useCallback(async () => {
+    try {
+      const { ethereum } = window;
+      if (!ethereum) {
+        console.log("Make sure you have metamask!");
+        return;
+      } else {
+        console.log("We have the ethereum object", ethereum);
+        getLines();
+      }
+      const accounts = await ethereum.request({ method: "eth_accounts" });
+      if (accounts.length !== 0) {
+        const account = accounts[0];
+        setCurrentAccount(account);
+      } else {
+        console.log("No authorized account found");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   const connectWallet = async () => {
     try {
@@ -158,15 +156,44 @@ export default function App() {
       });
       console.log("Connected", accounts[0]);
       setCurrentAccount(accounts[0]);
-      getLines();
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
+    let contract: any;
+
+    const onNewLine = (from: string, timestamp: any, line: string) => {
+      setAllLines((prevState: any[]) => [
+        ...prevState,
+        {
+          address: from,
+          timestamp: new Date(timestamp * 1000),
+          line: line,
+        },
+      ]);
+    };
+
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+
+      contract = new ethers.Contract(contractAddress, contractABI, signer);
+      contract.on("NewPickUpLine", onNewLine);
+    }
+
+    return () => {
+      if (contract) {
+        contract.off("NewPickUpLine", onNewLine);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    getLines();
     checkIfWalletIsConnected();
-  }, [checkIfWalletIsConnected]);
+  }, [getLines, checkIfWalletIsConnected]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(event.target.value);
@@ -177,7 +204,6 @@ export default function App() {
     pickup();
   };
 
-  console.log(allLines);
   return (
     <main className="mainContainer">
       <header className="header">
@@ -197,8 +223,8 @@ export default function App() {
             crack a smile if you’re bold enough to try them out!
           </p>
         </div>
-        <div className="wallet-connect">
-          {!currentAccount && (
+        {!currentAccount && (
+          <div className="wallet-connect">
             <Button
               variant="contained"
               startIcon={<Plugs size={32} weight="light" />}
@@ -214,8 +240,8 @@ export default function App() {
             >
               Connect Wallet
             </Button>
-          )}
-        </div>
+          </div>
+        )}
         {currentAccount && (
           <form className="form-box" onSubmit={handleSubmit}>
             <CustomTextField
