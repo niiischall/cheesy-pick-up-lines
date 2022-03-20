@@ -52,7 +52,7 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-const contractAddress = "0x27B54F457Ef0F3f2d6aF715FA5445222a679D217";
+const contractAddress = "0xB9B54279A5c1e9AB5478eA71990A01Ce29Dd63da";
 const contractABI = abi.abi;
 
 export default function App() {
