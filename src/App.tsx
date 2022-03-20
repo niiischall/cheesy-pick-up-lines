@@ -52,7 +52,7 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-const contractAddress = "0x4Eb1d90D5e3dE52194Ef0d3b237E8441D2D2b225";
+const contractAddress = "0x27B54F457Ef0F3f2d6aF715FA5445222a679D217";
 const contractABI = abi.abi;
 
 export default function App() {
@@ -108,7 +108,7 @@ export default function App() {
           linesCleaned.push({
             address: line.writer,
             timestamp: new Date(line.timestamp * 1000),
-            message: line.line,
+            line: line.line,
           });
         });
         setAllLines(linesCleaned);
@@ -177,6 +177,7 @@ export default function App() {
     pickup();
   };
 
+  console.log(allLines);
   return (
     <main className="mainContainer">
       <header className="header">
@@ -245,14 +246,7 @@ export default function App() {
                   <p className="message-text">
                     <strong>🕰️</strong>
                     <br />
-                    <em>{d.toLocaleString("en-IN")}</em>
-                  </p>
-                </div>
-                <div className="message">
-                  <p className="message-text">
-                    <strong>🧀</strong>
-                    <br />
-                    {line.line}
+                    {d.toLocaleString("en-IN")}
                   </p>
                 </div>
                 <div className="message">
@@ -260,6 +254,13 @@ export default function App() {
                     <strong>✍🏻</strong>
                     <br />
                     {line.address}
+                  </p>
+                </div>
+                <div className="message">
+                  <p className="message-text">
+                    <strong>🧀</strong>
+                    <br />
+                    <em>{line.line}</em>
                   </p>
                 </div>
               </div>

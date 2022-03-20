@@ -200,11 +200,12 @@ body {
 .message-text-address {
   width: 75%;
   font-size: 14px;
+  font-weight: 500;
   text-align: center;
-  width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  margin: 0px auto;
 }
 
 .message-text-address strong {
