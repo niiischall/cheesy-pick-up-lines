@@ -98,26 +98,6 @@ export const ConnectWalletDialog: React.FC<Props> = ({ open, onClose }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const renderConnectButton = () => {
-    let connectButton = (
-      <ConnectWalletButton variant="contained" onClick={() => onClose()}>
-        <a
-          href="https://metamask.io/"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            color: "#ffffff",
-            margin: "0px auto",
-            textDecoration: "none",
-          }}
-        >
-          Get a Wallet
-        </a>
-      </ConnectWalletButton>
-    );
-    return connectButton;
-  };
-
   return (
     <WalletDialog
       fullScreen={fullScreen}
@@ -145,11 +125,24 @@ export const ConnectWalletDialog: React.FC<Props> = ({ open, onClose }) => {
             className="connect-wallet-learn"
             href="https://metamask.io/faqs/"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
           >
             Learn how to connect
           </a>
-          {renderConnectButton()}
+          <ConnectWalletButton variant="contained" onClick={() => onClose()}>
+            <a
+              href="https://metamask.io/"
+              target="_blank"
+              style={{
+                color: "#ffffff",
+                margin: "0px auto",
+                textDecoration: "none",
+              }}
+              rel="noopener noreferrer"
+            >
+              Get a Wallet
+            </a>
+          </ConnectWalletButton>
         </div>
       </DialogContent>
     </WalletDialog>
