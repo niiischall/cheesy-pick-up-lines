@@ -79,6 +79,7 @@ export const ConnectWalletButton = withStyles((theme: any) => ({
     borderRadius: "100px",
     width: 200,
     height: 54,
+    margin: '0px auto',
     marginTop: 16,
     display: "flex",
     justifyContent: "space-between",
@@ -121,13 +122,15 @@ export const ConnectWalletDialog: React.FC<Props> = ({ open, onClose }) => {
           <Metamask />
         </div>
         <div className="connect-wallet-controls">
+          <span>Is this your first time with a Web3 App?</span>
+          <br/>
           <a
             className="connect-wallet-learn"
             href="https://metamask.io/faqs/"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn how to connect
+            Read this!
           </a>
           <ConnectWalletButton variant="contained" onClick={() => onClose()}>
             <a
