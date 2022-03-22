@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ethers } from "ethers";
 import { Heart, Plugs } from "phosphor-react";
 import {
@@ -8,8 +8,9 @@ import {
   LinearProgress,
   styled,
 } from "@material-ui/core";
-import "./App.css";
 
+import "./App.css";
+import Dialog from "./Dialog";
 import abi from "./utils/PickUpLines.json";
 
 declare global {
@@ -52,7 +53,7 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-const contractAddress = "0xDD3EAf6e60417880d05E8B46014Fc9fF488Dc9ce";
+const contractAddress = "0x3740805a2A54a8C8A60faa3fD89A7840f71e3505";
 const contractABI = abi.abi;
 
 export default function App() {
@@ -62,6 +63,7 @@ export default function App() {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   const pickup = async () => {
     try {
@@ -83,61 +85,53 @@ export default function App() {
         setMessage("");
       }
     } catch (error: any) {
-      setError(
-        "Failed transaction 🤨! Wanna try again?"
-      );
+      setError("Failed transaction 🤨! Wanna try again?");
       setMessage("");
       setLoading(false);
     }
   };
 
-  const getLines = useCallback(
-    () => async () => {
-      try {
-        setError("");
-        const { ethereum } = window;
-        if (ethereum) {
-          const provider = new ethers.providers.Web3Provider(ethereum);
-          const signer = provider.getSigner();
-          const Contract = new ethers.Contract(
-            contractAddress,
-            contractABI,
-            signer
-          );
-
-          const lines = await Contract.getAllLines();
-          let linesCleaned: any[] = [];
-          lines.forEach((line: any) => {
-            linesCleaned.push({
-              address: line.writer,
-              timestamp: new Date(line.timestamp * 1000),
-              line: line.line,
-            });
-          });
-          setAllLines(linesCleaned);
-        } else {
-          console.log("Ethereum object doesn't exist!");
-        }
-      } catch (error) {
-        setError(
-          "Failed transaction 🤨! Wanna try again?"
+  const getLines = async () => {
+    try {
+      setError("");
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const Contract = new ethers.Contract(
+          contractAddress,
+          contractABI,
+          signer
         );
-        console.log(error);
+        const lines = await Contract.getAllLines();
+        let linesCleaned: any[] = [];
+        lines.forEach((line: any) => {
+          linesCleaned.push({
+            address: line.writer,
+            timestamp: new Date(line.timestamp * 1000),
+            line: line.line,
+          });
+        });
+        setAllLines(linesCleaned);
+      } else {
+        console.log("Ethereum object doesn't exist!");
       }
-    },
-    []
-  );
+    } catch (error) {
+      setError("Connect your wallet to see what's been 🧑‍🍳");
+      console.log(error);
+    }
+  };
 
   const checkIfWalletIsConnected = useCallback(async () => {
     try {
       setError("");
       const { ethereum } = window;
       if (!ethereum) {
+        setOpenDialog(true);
         console.log("Make sure you have metamask!");
         return;
       } else {
         console.log("We have the ethereum object", ethereum);
-        getLines();
       }
       const accounts = await ethereum.request({ method: "eth_accounts" });
       if (accounts.length !== 0) {
@@ -147,37 +141,31 @@ export default function App() {
         console.log("No authorized account found");
       }
     } catch (error) {
-      setError(
-        "Failed transaction 🤨! Wanna try again?"
-      );
+      setError("Failed transaction 🤨! Wanna try again?");
       console.log(error);
     }
-  }, [getLines]);
+  }, []);
 
   const connectWallet = async () => {
     try {
       setError("");
       const { ethereum } = window;
       if (!ethereum) {
-        alert("Get MetaMask!");
+        setOpenDialog(true);
         return;
       }
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
-      console.log("Connected", accounts[0]);
       setCurrentAccount(accounts[0]);
     } catch (error) {
-      setError(
-        "Failed transaction 🤨! Wanna try again?"
-      );
+      setError("Failed transaction 🤨! Wanna try again?");
       console.log(error);
     }
   };
 
   useEffect(() => {
     let contract: any;
-
     const onNewLine = (from: string, timestamp: any, line: string) => {
       setAllLines((prevState: any[]) => [
         ...prevState,
@@ -205,17 +193,27 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    getLines();
     checkIfWalletIsConnected();
-  }, [getLines, checkIfWalletIsConnected]);
+  }, [checkIfWalletIsConnected]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    const { ethereum } = window;
+    if (ethereum) {
+      getLines();
+    }
+  }, [currentAccount]);
+
+  const handleChange = (event: any) => {
     setMessage(event.target.value);
   };
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
     pickup();
+  };
+
+  const handleClose = (event: any) => {
+    setOpenDialog(false);
   };
 
   return (
@@ -309,6 +307,7 @@ export default function App() {
           })}
         </div>
       </div>
+      {openDialog && <Dialog open={openDialog} onClose={handleClose} />}
     </main>
   );
 }
