@@ -225,7 +225,7 @@ export default function App() {
             before 30th of April, 2022.
           </span>
         </div>
-        <h1 className="heading">🧀 Cheesy Pick-Up Lines</h1>
+        <h1 className="heading">🧀 Pick-Up Lines</h1>
       </header>
       <div className="dataContainer">
         <div className="bio">
