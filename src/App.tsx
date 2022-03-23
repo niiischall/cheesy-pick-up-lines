@@ -6,12 +6,15 @@ import {
   Button,
   IconButton,
   LinearProgress,
+  Snackbar,
   styled,
 } from "@material-ui/core";
 import ReactGA from "react-ga";
+import { SnackbarOrigin } from "@material-ui/core/Snackbar";
 
 import "./App.css";
-import Dialog from "./Dialog";
+import ConnectWallletDialog from "./ConnectWalletDialog";
+import { ShareQuoteDialog } from "./ShareQuoteDialog";
 import abi from "./utils/PickUpLines.json";
 
 declare global {
@@ -59,6 +62,10 @@ const contractABI = abi.abi;
 
 ReactGA.initialize("G-36EJ961NWW", { debug: true });
 
+export interface State extends SnackbarOrigin {
+  open: boolean;
+}
+
 export default function App() {
   const [currentAccount, setCurrentAccount] = useState("");
   const [allLines, setAllLines] = useState<any[]>([]);
@@ -66,7 +73,9 @@ export default function App() {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [openWalletDialog, setOpenWalletDialog] = useState<boolean>(false);
+  const [openShareDialog, setOpenShareDialog] = useState<boolean>(false);
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
 
   const pageTracking = () => {
     if (window.location.pathname) {
@@ -174,7 +183,7 @@ export default function App() {
       });
       const { ethereum } = window;
       if (!ethereum) {
-        setOpenDialog(true);
+        setOpenWalletDialog(true);
         return;
       }
       const accounts = await ethereum.request({
@@ -224,8 +233,20 @@ export default function App() {
     pickup();
   };
 
-  const handleClose = (event: any) => {
-    setOpenDialog(false);
+  const handleWalletDialogClose = (event: any) => {
+    event.preventDefault();
+    setOpenWalletDialog(false);
+  };
+
+  const handleShareDialogClose = (event: any) => {
+    console.log('close share dialog!');
+    event.preventDefault();
+    setOpenShareDialog(false);
+  }
+
+  const handleSnackbarClose = (event: any) => {
+    event.preventDefault();
+    setOpenSnackbar(false);
   };
 
   const shareOnTwitter = (message: string) => {
@@ -234,7 +255,7 @@ export default function App() {
       action: "COPY_TEXT",
       label: "TWITTER",
     });
-    console.log(message);
+    setOpenShareDialog(true);
   };
 
   const handleNetworkSwitch = async () => {
@@ -272,11 +293,11 @@ export default function App() {
       <header className="header">
         <div className="super-header">
           <span>
-            Stand a chance to win ₹500 worth of ETH! Send an OG 🧀 pick-up line
+            Stand a chance to win ₹1000 worth of ETH! Send an OG 🧀 pick-up line
             before 30th of April, 2022.
           </span>
         </div>
-        <h1 className="heading">🧀 Pick-Up Lines</h1>
+        <h1 className="heading">🧀 Pick Up Lines</h1>
       </header>
       <div className="dataContainer">
         <div className="bio">
@@ -369,8 +390,22 @@ export default function App() {
             );
           })}
         </div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          open={openSnackbar}
+          onClose={handleSnackbarClose}
+          autoHideDuration={1000}
+        >
+          <div className="snackbar">
+            <span>Copied to Clipboard. Tweet it!</span>
+          </div>
+        </Snackbar>
       </div>
-      {openDialog && <Dialog open={openDialog} onClose={handleClose} />}
+      <ConnectWallletDialog open={openWalletDialog} onClose={handleWalletDialogClose} />
+      <ShareQuoteDialog open={openShareDialog} onClose={handleShareDialogClose} />
     </main>
   );
 }

@@ -106,7 +106,7 @@ export const ConnectWalletDialog: React.FC<Props> = ({ open, onClose }) => {
       <DialogTitle id="connect-wallet-dialog-title">
         <Wallet size={32} weight="fill" />
         <IconButton
-          onClick={() => onClose()}
+          onClick={(event: any) => onClose(event)}
           style={{
             backgroundColor: "transparent",
           }}
