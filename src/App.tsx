@@ -57,6 +57,8 @@ const CustomTextField = styled(TextField)({
 const contractAddress = "0x3740805a2A54a8C8A60faa3fD89A7840f71e3505";
 const contractABI = abi.abi;
 
+ReactGA.initialize("G-36EJ961NWW", { debug: true });
+
 export default function App() {
   const [currentAccount, setCurrentAccount] = useState("");
   const [allLines, setAllLines] = useState<any[]>([]);
@@ -76,9 +78,9 @@ export default function App() {
     try {
       setError("");
       ReactGA.event({
-        category: 'WEBSITE_INTERACTION',
-        action: 'POST_LINE',
-        label: 'SUBMIT'
+        category: "WEBSITE_INTERACTION",
+        action: "POST_LINE",
+        label: "SUBMIT",
       });
       const { ethereum } = window;
       if (ethereum) {
@@ -107,9 +109,9 @@ export default function App() {
     try {
       setError("");
       ReactGA.event({
-        category: 'WEBSITE_INTERACTION',
-        action: 'GET_LINES',
-        label: 'FETCH'
+        category: "WEBSITE_INTERACTION",
+        action: "GET_LINES",
+        label: "FETCH",
       });
       const { ethereum } = window;
       if (ethereum) {
@@ -166,9 +168,9 @@ export default function App() {
     try {
       setError("");
       ReactGA.event({
-        category: 'WEBSITE_INTERACTION',
-        action: 'CONNECT_WALLET',
-        label: 'CONNECT'
+        category: "WEBSITE_INTERACTION",
+        action: "CONNECT_WALLET",
+        label: "CONNECT",
       });
       const { ethereum } = window;
       if (!ethereum) {
@@ -228,10 +230,10 @@ export default function App() {
 
   const shareOnTwitter = (message: string) => {
     ReactGA.event({
-      category: 'SOCIAL_SHARE',
-      action: 'COPY_TEXT',
-      label: 'TWITTER'
-    })
+      category: "SOCIAL_SHARE",
+      action: "COPY_TEXT",
+      label: "TWITTER",
+    });
     console.log(message);
   };
 
