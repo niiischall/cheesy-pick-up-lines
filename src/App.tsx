@@ -203,6 +203,13 @@ export default function App() {
     }
   }, [currentAccount]);
 
+  useEffect(() => {
+    const { ethereum } = window;
+    if (ethereum) {
+      handleNetworkSwitch();
+    }
+  }, [currentAccount]);
+
   const handleChange = (event: any) => {
     setMessage(event.target.value);
   };
@@ -214,6 +221,14 @@ export default function App() {
 
   const handleClose = (event: any) => {
     setOpenDialog(false);
+  };
+
+  const handleNetworkSwitch = async () => {
+    setError("");
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: `0x${Number(4).toString(16)}` }],
+    });
   };
 
   return (
