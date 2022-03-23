@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { ethers } from "ethers";
-import { Heart, Plugs } from "phosphor-react";
+import { Heart, Plugs, TwitterLogo } from "phosphor-react";
 import {
   TextField,
   Button,
@@ -8,6 +8,7 @@ import {
   LinearProgress,
   styled,
 } from "@material-ui/core";
+import ReactGA from "react-ga";
 
 import "./App.css";
 import Dialog from "./Dialog";
@@ -65,9 +66,20 @@ export default function App() {
   const [error, setError] = useState<string>("");
   const [openDialog, setOpenDialog] = useState<boolean>(false);
 
+  const pageTracking = () => {
+    if (window.location.pathname) {
+      ReactGA.pageview(window.location.pathname);
+    }
+  };
+
   const pickup = async () => {
     try {
       setError("");
+      ReactGA.event({
+        category: 'WEBSITE_INTERACTION',
+        action: 'POST_LINE',
+        label: 'SUBMIT'
+      });
       const { ethereum } = window;
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
@@ -94,6 +106,11 @@ export default function App() {
   const getLines = async () => {
     try {
       setError("");
+      ReactGA.event({
+        category: 'WEBSITE_INTERACTION',
+        action: 'GET_LINES',
+        label: 'FETCH'
+      });
       const { ethereum } = window;
       if (ethereum) {
         const provider = new ethers.providers.Web3Provider(ethereum);
@@ -148,6 +165,11 @@ export default function App() {
   const connectWallet = async () => {
     try {
       setError("");
+      ReactGA.event({
+        category: 'WEBSITE_INTERACTION',
+        action: 'CONNECT_WALLET',
+        label: 'CONNECT'
+      });
       const { ethereum } = window;
       if (!ethereum) {
         setOpenDialog(true);
@@ -191,6 +213,36 @@ export default function App() {
     };
   }, []);
 
+  const handleChange = (event: any) => {
+    setMessage(event.target.value);
+  };
+
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    pickup();
+  };
+
+  const handleClose = (event: any) => {
+    setOpenDialog(false);
+  };
+
+  const shareOnTwitter = (message: string) => {
+    ReactGA.event({
+      category: 'SOCIAL_SHARE',
+      action: 'COPY_TEXT',
+      label: 'TWITTER'
+    })
+    console.log(message);
+  };
+
+  const handleNetworkSwitch = async () => {
+    setError("");
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: `0x${Number(4).toString(16)}` }],
+    });
+  };
+
   useEffect(() => {
     checkIfWalletIsConnected();
   }, [checkIfWalletIsConnected]);
@@ -209,26 +261,9 @@ export default function App() {
     }
   }, [currentAccount]);
 
-  const handleChange = (event: any) => {
-    setMessage(event.target.value);
-  };
-
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
-    pickup();
-  };
-
-  const handleClose = (event: any) => {
-    setOpenDialog(false);
-  };
-
-  const handleNetworkSwitch = async () => {
-    setError("");
-    await window.ethereum.request({
-      method: "wallet_switchEthereumChain",
-      params: [{ chainId: `0x${Number(4).toString(16)}` }],
-    });
-  };
+  useEffect(() => {
+    pageTracking();
+  }, []);
 
   return (
     <main className="mainContainer">
@@ -294,27 +329,39 @@ export default function App() {
           {allLines.map((line: any, index: number) => {
             const d = new Date(line.timestamp.toString());
             return (
-              <div key={index} className="message-box">
-                <div className="message">
-                  <p className="message-text">
-                    <strong>🕰️</strong>
-                    <br />
-                    {d.toLocaleString("en-IN")}
-                  </p>
+              <div key={index} className="message-section">
+                <div className="message-box">
+                  <div className="message">
+                    <p className="message-text">
+                      <strong>🕰️</strong>
+                      <br />
+                      {d.toLocaleString("en-IN")}
+                    </p>
+                  </div>
+                  <div className="message">
+                    <p className="message-text-address">
+                      <strong>✍🏻</strong>
+                      <br />
+                      {line.address}
+                    </p>
+                  </div>
+                  <div className="message message-line">
+                    <p className="message-text">
+                      <strong>🧀</strong>
+                      <br />
+                      <em>{line.line}</em>
+                    </p>
+                  </div>
                 </div>
-                <div className="message">
-                  <p className="message-text-address">
-                    <strong>✍🏻</strong>
-                    <br />
-                    {line.address}
-                  </p>
-                </div>
-                <div className="message">
-                  <p className="message-text">
-                    <strong>🧀</strong>
-                    <br />
-                    <em>{line.line}</em>
-                  </p>
+                <div className="twitter-section">
+                  <IconButton
+                    onClick={() => shareOnTwitter(line.line)}
+                    style={{
+                      backgroundColor: "#ffffff",
+                    }}
+                  >
+                    <TwitterLogo color="#00acee" size={32} weight="fill" />
+                  </IconButton>
                 </div>
               </div>
             );
