@@ -8,9 +8,7 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import { useTheme, withStyles } from "@material-ui/core/styles";
-import { X } from "phosphor-react";
-
-import { Metamask } from "./utils/Icons";
+import { X, Wallet } from "phosphor-react";
 
 export interface Props {
   open: boolean;
@@ -79,8 +77,7 @@ export const ConnectWalletButton = withStyles((theme: any) => ({
     borderRadius: "100px",
     width: 200,
     height: 54,
-    margin: '0px auto',
-    marginTop: 16,
+    margin: "16px auto",
     display: "flex",
     justifyContent: "space-between",
   },
@@ -107,7 +104,7 @@ export const ConnectWalletDialog: React.FC<Props> = ({ open, onClose }) => {
       aria-labelledby="connect-wallet-dialog"
     >
       <DialogTitle id="connect-wallet-dialog-title">
-        <h3>Get a Crypto Wallet.</h3>
+        <Wallet size={32} weight="fill" />
         <IconButton
           onClick={() => onClose()}
           style={{
@@ -119,19 +116,9 @@ export const ConnectWalletDialog: React.FC<Props> = ({ open, onClose }) => {
       </DialogTitle>
       <DialogContent>
         <div className="connect-wallet-dialog">
-          <Metamask />
+          <h3>Weird, We can't find a crypto wallet.</h3>
         </div>
         <div className="connect-wallet-controls">
-          <span>Is this your first time with a Web3 App?</span>
-          <br/>
-          <a
-            className="connect-wallet-learn"
-            href="https://metamask.io/faqs/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read this!
-          </a>
           <ConnectWalletButton variant="contained" onClick={() => onClose()}>
             <a
               href="https://metamask.io/"
@@ -146,6 +133,17 @@ export const ConnectWalletDialog: React.FC<Props> = ({ open, onClose }) => {
               Get a Wallet
             </a>
           </ConnectWalletButton>
+          <div className="instruction-container">
+            <span>Is this your first time with Web3?</span>{" "}
+            <a
+              className="connect-wallet-learn"
+              href="https://sassy-beast-257.notion.site/Web3-Apps-for-Dummies-104b941995a548838d8070937b0cc46c"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read this!
+            </a>
+          </div>
         </div>
       </DialogContent>
     </WalletDialog>
