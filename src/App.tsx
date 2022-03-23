@@ -127,7 +127,6 @@ export default function App() {
       setError("");
       const { ethereum } = window;
       if (!ethereum) {
-        setOpenDialog(true);
         console.log("Make sure you have metamask!");
         return;
       } else {
