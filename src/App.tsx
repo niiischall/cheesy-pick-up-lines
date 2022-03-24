@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { ethers } from "ethers";
 import { Heart, Plugs, TwitterLogo } from "phosphor-react";
 import {
@@ -26,34 +26,34 @@ declare global {
 
 const CustomTextField = styled(TextField)({
   "& textarea": {
-    color: "#ffffff",
+    color: "##d1495b",
     fontFamily: "Poppins",
     fontWeight: 500,
   },
   "& label": {
-    color: "white",
+    color: "#d1495b",
     fontFamily: "Poppins",
     fontWeight: 500,
     marginRight: "5px",
   },
   "& label.Mui-focused": {
-    color: "white",
+    color: "#d1495b",
     fontFamily: "Poppins",
     fontWeight: 500,
   },
   "& .MuiInput-underline:after": {
-    borderBottomColor: "yellow",
+    borderBottomColor: "#d1495b",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
       borderWidth: "2.5px",
-      borderColor: "white",
+      borderColor: "#d1495b",
     },
     "&:hover fieldset": {
-      borderColor: "yellow",
+      borderColor: "#d1495b",
     },
     "&.Mui-focused fieldset": {
-      borderColor: "yellow",
+      borderColor: "#d1495b",
     },
   },
 });
@@ -290,44 +290,93 @@ export default function App() {
   }, []);
 
   return (
-    <main className="mainContainer">
+    <div className="mainContainer">
       <header className="header">
         <div className="super-header">
           <span>
-            Stand a chance to win ₹1000 worth of ETH! Send an OG 🧀 pick-up line
-            before 30th of April, 2022.
+            Stand a chance to win ₹1000 worth of ETH! Send an OG 🧀 pick up line
+            before
+            <br className="super-header-break" />
+            30th of April, 2022.
           </span>
         </div>
         <h1 className="heading">🧀 Pick Up Lines</h1>
       </header>
-      <div className="dataContainer">
-        <div className="bio">
-          <p>
-            Can’t find the right words to say to that special someone? These
-            cheesy pickup lines may be corny, but they’re sure to make someone
-            crack a smile if you’re bold enough to try them out!
-          </p>
-        </div>
-        {!currentAccount && (
-          <div className="wallet-connect">
-            <Button
-              variant="contained"
-              startIcon={<Plugs size={32} weight="light" />}
-              onClick={() => connectWallet()}
-              style={{
-                width: 250,
-                height: 64,
-                margin: "0px auto",
-                fontFamily: "Poppins",
-                fontWeight: 500,
-              }}
-              color="secondary"
-            >
-              Connect Wallet
-            </Button>
+      <main className="dataContainer">
+        {!currentAccount ? (
+          <div className="welcome-container">
+            <div className="wallet-connect">
+              <Button
+                variant="contained"
+                startIcon={<Plugs size={32} weight="light" />}
+                onClick={() => connectWallet()}
+                style={{
+                  width: 250,
+                  height: 64,
+                  margin: "0px auto",
+                  fontFamily: "Poppins",
+                  fontWeight: 500,
+                }}
+                color="secondary"
+              >
+                Connect Wallet
+              </Button>
+            </div>
+            <div className="bio">
+              <div className="bio-section">
+                <img
+                  src="/assets/love-remember.png"
+                  className="bio-section-icon"
+                  alt="Love Remember"
+                />
+                <h1>
+                  Can’t find the right words to say to that special someone?
+                </h1>
+              </div>
+              <div className="bio-section">
+                <h1>These cheesy pickup lines may be corny...</h1>
+                <img
+                  src="/assets/everywhere-together.png"
+                  className="bio-section-icon"
+                  alt="Everywhere Together"
+                />
+              </div>
+              <div className="bio-section">
+                <img
+                  src="/assets/spread-love.png"
+                  className="bio-section-icon"
+                  alt="Spread Love"
+                />
+                <h1>But they’re sure to make someone crack a smile.</h1>
+              </div>
+              <div className="bio-section">
+                <h1>If you’re bold enough to try them out!</h1>
+                <img
+                  src="/assets/intense-feeling.png"
+                  className="bio-section-icon"
+                  alt="Intense Feeling"
+                />
+              </div>
+              <div className="wallet-connect">
+                <Button
+                  variant="contained"
+                  startIcon={<Plugs size={32} weight="light" />}
+                  onClick={() => connectWallet()}
+                  style={{
+                    width: 250,
+                    height: 64,
+                    margin: "0px auto",
+                    fontFamily: "Poppins",
+                    fontWeight: 500,
+                  }}
+                  color="secondary"
+                >
+                  Connect Wallet
+                </Button>
+              </div>
+            </div>
           </div>
-        )}
-        {currentAccount && (
+        ) : (
           <form className="form-box" onSubmit={handleSubmit}>
             <CustomTextField
               id="message-field"
@@ -378,7 +427,7 @@ export default function App() {
         </div>
         <Snackbar
           anchorOrigin={{
-            vertical: "bottom",
+            vertical: "top",
             horizontal: "left",
           }}
           open={openSnackbar}
@@ -389,7 +438,20 @@ export default function App() {
             <span>Copied to Clipboard. Tweet it!</span>
           </div>
         </Snackbar>
-      </div>
+      </main>
+      <footer className="footer">
+        <h2 style={{ marginRight: 10 }}>Built by </h2>
+        <TwitterLogo color="#00acee" size={32} weight="fill"></TwitterLogo>
+        <h2>
+          <a
+            href="https://twitter.com/niiischall"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            @niiischall
+          </a>
+        </h2>
+      </footer>
       <ConnectWallletDialog
         open={openWalletDialog}
         onClose={handleWalletDialogClose}
@@ -398,6 +460,6 @@ export default function App() {
         open={openShareDialog}
         onClose={handleShareDialogClose}
       />
-    </main>
+    </div>
   );
 }
