@@ -296,8 +296,7 @@ export default function App() {
           <span>
             Stand a chance to win ₹1000 worth of ETH! Send an OG 🧀 pick up line
             before
-            <br className="super-header-break" />
-            30th of April, 2022.
+            <br className="super-header-break" /> 30th of April, 2022.
           </span>
         </div>
         <h1 className="heading">🧀 Pick Up Lines</h1>
@@ -313,7 +312,7 @@ export default function App() {
                 style={{
                   width: 250,
                   height: 64,
-                  margin: "0px auto",
+                  margin: "16px auto",
                   fontFamily: "Poppins",
                   fontWeight: 500,
                 }}
@@ -321,7 +320,9 @@ export default function App() {
               >
                 Connect Wallet
               </Button>
+              <p>It's free. It's cupid. It's Web3.0!</p>
             </div>
+            {error && <p className="error-message">{error}</p>}
             <div className="bio">
               <div className="bio-section">
                 <img
@@ -392,11 +393,10 @@ export default function App() {
               type="submit"
               style={{ marginLeft: 10, backgroundColor: "transparent" }}
             >
-              <Heart size={32} weight="fill" color="#ffffff" />
+              <Heart size={32} weight="fill" color="#d1495b" />
             </IconButton>
           </form>
         )}
-        {error && <p className="error-message">{error}</p>}
         {loading && <LinearProgress color="secondary" />}
         <div className="message-container">
           {allLines.map((line: any, index: number) => {

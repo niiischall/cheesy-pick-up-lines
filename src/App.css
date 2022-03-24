@@ -169,7 +169,7 @@ body {
 }
 
 .error-message {
-  color: #ffffff;
+  color: #d1495b;
   font-size: 24px;
   font-weight: 700;
   text-align: center;
@@ -178,14 +178,26 @@ body {
 .wallet-connect {
   margin: 24px 0px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  text-align: center;
 }
 
 .wallet-connect p {
   font-size: 24px;
   font-weight: 700;
   color: #d1495b;
+}
+
+.wallet-connect-break {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .wallet-connect-break {
+    display: block;
+  }
 }
 
 .wallet-button {
@@ -220,6 +232,7 @@ body {
 @media screen and (max-width: 942px) {
   .message-container {
     flex-direction: column;
+    margin: 0px;
   }
   .message-section {
     margin: 0px auto 50px auto;
@@ -319,4 +332,4 @@ body {
 
 .footer a {
   color: #ffffff;
-} 
+}
