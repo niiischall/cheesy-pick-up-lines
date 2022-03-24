@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Poppins:wght@400;500;700&display=swap");
 
 *,
 *::before,
@@ -34,10 +35,11 @@ body {
 }
 
 .dataContainer {
+  width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 60vw;
+  padding: 0px 100px;
 }
 
 @media screen and (max-width: 820px) {
@@ -49,25 +51,24 @@ body {
 
 @keyframes color {
   0% {
-    background: #EDAE49;
+    background: #edae49;
   }
   20% {
-    background: #D1495B;
+    background: #d1495b;
   }
   40% {
-    background: #00798C;
+    background: #00798c;
   }
   60% {
-    background: #DDD78D;
+    background: #ddd78d;
   }
   80% {
-    background: #003D5B;
+    background: #003d5b;
   }
   100% {
-    background: #7678ED;
+    background: #7678ed;
   }
 }
-
 
 .super-header {
   background: #5c53c5; /* Fallback */
@@ -109,14 +110,17 @@ body {
 .bio {
   text-align: center;
   color: #ffffff;
+  max-width: 60vw;
+  margin: 0px auto;
   margin-top: 16px;
   font-size: 18px;
   font-weight: 500;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 500px) {
   .bio {
     font-size: 14px;
+    max-width: 100%;
   }
 }
 
@@ -137,7 +141,7 @@ body {
 .wallet-connect p {
   font-size: 24px;
   font-weight: 700;
-  color: #D1495B;
+  color: #d1495b;
 }
 
 .wallet-button {
@@ -153,45 +157,51 @@ body {
 }
 
 .message-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
   margin-top: 24px;
 }
 
 .message-section {
-  margin-bottom: 24px;
+  max-width: 350px;
+  position: relative;
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 50px;
 }
 
-.twitter-section {
-  margin-left: 15px;
-}
-.twitter-button {
-  background-color: #ffffff;
+@media screen and (max-width: 942px) {
+  .message-container {
+    flex-direction: column;
+  }
+  .message-section {
+    margin: 0px auto 50px auto;
+  }
 }
 
 .message-box {
   background-color: oldlace;
-  width: 90%;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  border-radius: 10px;
+  width: 350px;
+  min-height: 400px;
+  padding: 24px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
-  transition: all 0.2s ease;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-@media screen and (max-width: 400px) {
-  .message-box {
-    flex-direction: column;
-    width: 80%;
-  }
+.message-heading {
+  font-family: "PT Sans", sans-serif;
+  color: #838383;
 }
 
-.message {
-  width: 30%;
-  margin: 0px 10px;
-  text-align: center;
+.message-details {
+  display: flex;
+  justify-content: space-between;
 }
 
 @media screen and (max-width: 400px) {
@@ -201,46 +211,32 @@ body {
   }
 }
 
-.message-text {
-  width: 100%;
-  font-size: 14px;
-  text-align: center;
-}
-
-.message-text strong {
-  font-size: 18px;
-}
-
-@media screen and (max-width: 400px) {
-  .message-text {
-    text-align: left;
-  }
-  .message-line {
-    order: -1;
-  }
-}
-
 .message-text-address {
-  width: 75%;
+  width: 40%;
   font-size: 14px;
   font-weight: 500;
-  text-align: center;
+  text-align: left;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin: 0px auto;
 }
 
-.message-text-address strong {
-  font-size: 18px;
+.twitter-box {
+  margin-left: 15px;
+  position: absolute;
+  top: -25px;
+  right: -25px;
 }
 
 @media screen and (max-width: 400px) {
-  .message-text-address {
-    text-align: left;
-    width: 50%;
-    margin: 0px;
+  .twitter-box {
+    top: -20px;
+    right: -10px;
   }
+}
+
+.twitter-button {
+  background-color: #ffffff;
 }
 
 .connect-wallet-learn {
@@ -250,10 +246,10 @@ body {
 .snackbar {
   background-color: #ffffff;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-  rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   border-radius: 5px;
   padding: 15px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
   font-weight: 500;
 }

@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import ReactGA from "react-ga";
 import { SnackbarOrigin } from "@material-ui/core/Snackbar";
+import moment from "moment";
 
 import "./App.css";
 import ConnectWallletDialog from "./ConnectWalletDialog";
@@ -239,10 +240,10 @@ export default function App() {
   };
 
   const handleShareDialogClose = (event: any) => {
-    console.log('close share dialog!');
+    console.log("close share dialog!");
     event.preventDefault();
     setOpenShareDialog(false);
-  }
+  };
 
   const handleSnackbarClose = (event: any) => {
     event.preventDefault();
@@ -351,32 +352,17 @@ export default function App() {
         <div className="message-container">
           {allLines.map((line: any, index: number) => {
             const d = new Date(line.timestamp.toString());
+            const time = moment.utc(d).local().startOf("seconds").fromNow();
             return (
               <div key={index} className="message-section">
                 <div className="message-box">
-                  <div className="message">
-                    <p className="message-text">
-                      <strong>🕰️</strong>
-                      <br />
-                      {d.toLocaleString("en-IN")}
-                    </p>
-                  </div>
-                  <div className="message">
-                    <p className="message-text-address">
-                      <strong>✍🏻</strong>
-                      <br />
-                      {line.address}
-                    </p>
-                  </div>
-                  <div className="message message-line">
-                    <p className="message-text">
-                      <strong>🧀</strong>
-                      <br />
-                      <em>{line.line}</em>
-                    </p>
+                  <h1 className="message-heading">{line.line}</h1>
+                  <div className="message-details">
+                    <h3 className="message-text-address">✍🏻 {line.address}</h3>
+                    <h5 style={{ color: "#7678ED" }}>{time}</h5>
                   </div>
                 </div>
-                <div className="twitter-section">
+                <div className="twitter-box">
                   <IconButton
                     onClick={() => shareOnTwitter(line.line)}
                     style={{
@@ -404,8 +390,14 @@ export default function App() {
           </div>
         </Snackbar>
       </div>
-      <ConnectWallletDialog open={openWalletDialog} onClose={handleWalletDialogClose} />
-      <ShareQuoteDialog open={openShareDialog} onClose={handleShareDialogClose} />
+      <ConnectWallletDialog
+        open={openWalletDialog}
+        onClose={handleWalletDialogClose}
+      />
+      <ShareQuoteDialog
+        open={openShareDialog}
+        onClose={handleShareDialogClose}
+      />
     </main>
   );
 }
