@@ -149,4 +149,4 @@ export const ShareQuoteDialog: React.FC<Props> = ({
   );
 };
 
-export default ShareDialog;
+export default ShareQuoteDialog;
