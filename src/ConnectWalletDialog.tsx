@@ -134,7 +134,7 @@ export const ConnectWalletDialog: React.FC<Props> = ({ open, onClose }) => {
             </a>
           </ConnectWalletButton>
           <div className="instruction-container">
-            <span>Is this your first time with Web3?</span>{" "}
+            <span>New to Web3?</span>{" "}
             <a
               className="connect-wallet-learn"
               href="https://sassy-beast-257.notion.site/Web3-Apps-for-Dummies-104b941995a548838d8070937b0cc46c"

@@ -21,6 +21,8 @@ body {
   align-items: center;
   width: 100%;
   min-height: 100vh;
+  overflow: hidden;
+  position: relative;
 }
 
 .dataContainer {
@@ -88,6 +90,10 @@ body {
   .super-header {
     font-size: 14px;
   }
+}
+
+.header-container {
+  display: flex;
 }
 
 .heading {
@@ -208,10 +214,15 @@ body {
 
 .form-box {
   color: #ffffff;
-  margin: 28px 0px;
+  margin: 28px 16px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.loader-container {
+  width: 200px;
+  margin: 24px auto;
 }
 
 .message-container {
@@ -335,4 +346,66 @@ body {
 
 .footer a {
   color: #ffffff;
+}
+
+.shownews {
+  font-weight:700;
+  width:600px;
+  font-family: 'Poppins', sans-serif;
+  position: absolute;
+  transform: rotate(-45deg);
+  left: -120px;
+  z-index: 10;
+}
+
+@media screen and (max-width: 400px) {
+  .shownews {
+    width: 100%;
+    position: relative;
+    transform: rotate(0deg);
+    left: 0px;
+  }
+}
+
+.shownews-link {
+  color: #7678ed;
+  text-decoration: underline!important;
+}
+
+.shownews #news { 
+  background: #edae49;
+  display:inline-block;
+  padding:16px 64px;
+  width: 100%;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+  rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  border: 2px solid #ffffff;
+   
+  clip-path: polygon(100% 100%, 100% 100%, 100% 100%, 100% 100%);
+  animation: mask 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function:ease;
+  animation-fill-mode: forwards;
+  animation-delay: 1s;
+}
+
+@media screen and (max-width: 400px) {
+  .shownews #news {
+    padding: 16px;
+  }
+}
+
+
+.shownews #news a{
+  color:#fff; 
+  text-decoration:none;
+} 
+
+@keyframes mask {
+  0% {
+    clip-path: polygon(0px 0px, 0% 0, 0% 100%, 0px 100%);
+  }
+  100% {
+    clip-path: polygon(0px 0px, 100% 0, 100% 100%, 0px 100%);
+  }
 }
