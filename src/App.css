@@ -141,9 +141,11 @@ body {
 }
 
 .bio-section h1 {
+  color: #d1495b;
   display: block;
   font-size: 36px;
-  width: 50%;
+  text-align: left;
+  width: 40%;
 }
 
 .bio-section-icon {
@@ -214,7 +216,7 @@ body {
 
 .message-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex-wrap: wrap;
   margin: 0px 100px;
   margin-top: 24px;
@@ -302,7 +304,8 @@ body {
 }
 
 .snackbar {
-  background-color: #ffffff;
+  color: #ffffff;
+  background-color: #d1495b;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
     rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
   border-radius: 5px;
@@ -326,7 +329,7 @@ body {
   align-items: center;
 }
 
-.footer h2 {
+.footer h3 {
   color: #ffffff;
 }
 

@@ -12,6 +12,7 @@ import { X, TwitterLogo } from "phosphor-react";
 
 export interface Props {
   open: boolean;
+  onShare: Function;
   onClose: Function;
 }
 
@@ -92,7 +93,11 @@ export const ShareButton = withStyles((theme: any) => ({
   },
 }))(Button);
 
-export const ShareQuoteDialog: React.FC<Props> = ({ open, onClose }) => {
+export const ShareQuoteDialog: React.FC<Props> = ({
+  open,
+  onClose,
+  onShare,
+}) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -106,7 +111,7 @@ export const ShareQuoteDialog: React.FC<Props> = ({ open, onClose }) => {
       <DialogTitle id="share-quote-dialog-title">
         <div className="wallet-header">
           <TwitterLogo color="#00acee" size={32} weight="fill" />
-          <h4 style={{ marginLeft: "10px" }}>Tweet this!</h4>
+          <h4 style={{ marginLeft: "10px" }}>Tweet this..</h4>
         </div>
         <IconButton
           onClick={(event: any) => onClose(event)}
@@ -118,23 +123,25 @@ export const ShareQuoteDialog: React.FC<Props> = ({ open, onClose }) => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <div className="connect-wallet-dialog">
-          <span>&nbsp;</span>
+        <div className="share-quote-content">
+          <h2 style={{ textAlign: "center" }}>
+            @ the person you want to dedicate it to!
+          </h2>
         </div>
         <div className="connect-wallet-controls">
-          <ShareButton variant="contained" onClick={() => onClose()}>
-            <a
-              href="https://metamask.io/"
-              target="_blank"
+          <ShareButton
+            variant="contained"
+            onClick={(event: any) => onShare(event)}
+          >
+            <span
               style={{
                 color: "#ffffff",
                 margin: "0px auto",
                 textDecoration: "none",
               }}
-              rel="noopener noreferrer"
             >
               Share
-            </a>
+            </span>
           </ShareButton>
         </div>
       </DialogContent>

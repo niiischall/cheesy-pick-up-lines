@@ -74,6 +74,7 @@ export default function App() {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [twitterShare, setTwitterShare] = useState<any>(null);
   const [openWalletDialog, setOpenWalletDialog] = useState<boolean>(false);
   const [openShareDialog, setOpenShareDialog] = useState<boolean>(false);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
@@ -250,12 +251,14 @@ export default function App() {
     setOpenSnackbar(false);
   };
 
-  const shareOnTwitter = (message: string) => {
+  const shareOnTwitter = (message: any) => {
+    setTwitterShare(null);
     ReactGA.event({
       category: "SOCIAL_SHARE",
       action: "COPY_TEXT",
       label: "TWITTER",
     });
+    setTwitterShare(message);
     setOpenShareDialog(true);
   };
 
@@ -265,6 +268,17 @@ export default function App() {
       method: "wallet_switchEthereumChain",
       params: [{ chainId: `0x${Number(4).toString(16)}` }],
     });
+  };
+
+  const handleShare = (event: any) => {
+    event.preventDefault();
+    console.log("Share!");
+    const add = twitterShare.address.substr(0, 7);
+    navigator.clipboard.writeText(
+      `🧀🧀🧀\n${twitterShare.line}\n🧀🧀🧀\n\n#pickuplines #${add}`
+    );
+    handleShareDialogClose(event);
+    setOpenSnackbar(true);
   };
 
   useEffect(() => {
@@ -413,7 +427,7 @@ export default function App() {
                 </div>
                 <div className="twitter-box">
                   <IconButton
-                    onClick={() => shareOnTwitter(line.line)}
+                    onClick={() => shareOnTwitter(line)}
                     style={{
                       backgroundColor: "#ffffff",
                     }}
@@ -440,9 +454,9 @@ export default function App() {
         </Snackbar>
       </main>
       <footer className="footer">
-        <h2 style={{ marginRight: 10 }}>Built by </h2>
+        <h3 style={{ marginRight: 10 }}>Built by </h3>
         <TwitterLogo color="#00acee" size={32} weight="fill"></TwitterLogo>
-        <h2>
+        <h3>
           <a
             href="https://twitter.com/niiischall"
             target="_blank"
@@ -450,7 +464,7 @@ export default function App() {
           >
             @niiischall
           </a>
-        </h2>
+        </h3>
       </footer>
       <ConnectWallletDialog
         open={openWalletDialog}
@@ -458,6 +472,7 @@ export default function App() {
       />
       <ShareQuoteDialog
         open={openShareDialog}
+        onShare={handleShare}
         onClose={handleShareDialogClose}
       />
     </div>
