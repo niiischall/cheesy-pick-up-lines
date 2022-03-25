@@ -348,7 +348,7 @@ export default function App() {
                 }}
                 color="secondary"
               >
-                Connect Wallet
+                {!window.ethereum ? "Get A Wallet" : "Connect Wallet"}
               </Button>
               <p>It's free. It's cupid. It's Web3.0!</p>
             </div>
@@ -402,7 +402,7 @@ export default function App() {
                   }}
                   color="secondary"
                 >
-                  Connect Wallet
+                  {!window.ethereum ? "Get A Wallet" : "Connect Wallet"}
                 </Button>
               </div>
             </div>
