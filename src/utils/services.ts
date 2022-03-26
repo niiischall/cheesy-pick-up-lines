@@ -3,7 +3,7 @@ import { getAnalytics } from "@firebase/analytics";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "@firebase/auth";
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  apiKey: "AIzaSyA8fW3MZDJ5l-2UwuUtcNra1fdZruKEcAg",
   authDomain: "pickuplines-art.firebaseapp.com",
   projectId: "pickuplines-art",
   storageBucket: "pickuplines-art.appspot.com",
