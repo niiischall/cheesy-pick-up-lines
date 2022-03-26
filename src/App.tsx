@@ -8,6 +8,7 @@ import Banner from "./components/Banner";
 import Footer from "./components/Footer";
 
 import "./App.css";
+import { googleAuthHelper } from "./utils/services";
 import abi from "./utils/PickUpLines.json";
 
 declare global {
@@ -21,16 +22,17 @@ const contractABI = abi.abi;
 
 ReactGA.initialize("G-36EJ961NWW", { debug: true });
 
-export const App:React.FC<{}> = () => {
+export const App: React.FC<{}> = () => {
   const [currentAccount, setCurrentAccount] = useState("");
   const [allLines, setAllLines] = useState<any[]>([]);
   const [message, setMessage] = useState<string>("");
 
+  const [twitterShare, setTwitterShare] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [openWalletDialog, setOpenWalletDialog] = useState<boolean>(false);
-  const [twitterShare, setTwitterShare] = useState<any>(null);
   const [openShareDialog, setOpenShareDialog] = useState<boolean>(false);
+  const [openFeedDialog, setOpenFeedDialog] = useState<boolean>(false);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
 
   const pageTracking = () => {
@@ -150,33 +152,17 @@ export const App:React.FC<{}> = () => {
     }
   };
 
-  useEffect(() => {
-    let contract: any;
-    const onNewLine = (from: string, timestamp: any, line: string) => {
-      setAllLines((prevState: any[]) => [
-        ...prevState,
-        {
-          address: from,
-          timestamp: new Date(timestamp * 1000),
-          line: line,
-        },
-      ]);
-    };
+  const handleFeedExplore = (event: any) => {
+    event.preventDefault();
+    setOpenFeedDialog(true);
+  };
 
-    if (window.ethereum && contractAddress) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-
-      contract = new ethers.Contract(contractAddress, contractABI, signer);
-      contract.on("NewPickUpLine", onNewLine);
-    }
-
-    return () => {
-      if (contract) {
-        contract.off("NewPickUpLine", onNewLine);
-      }
-    };
-  }, []);
+  const handleGoogleAuth = (event: any) => {
+    event.preventDefault();
+    console.log("Google Auth!");
+    googleAuthHelper();
+    setOpenFeedDialog(false);
+  };
 
   const handleChange = (event: any) => {
     setMessage(event.target.value);
@@ -193,9 +179,13 @@ export const App:React.FC<{}> = () => {
   };
 
   const handleShareDialogClose = (event: any) => {
-    console.log("close share dialog!");
     event.preventDefault();
     setOpenShareDialog(false);
+  };
+
+  const handleFeedDialogClose = (event: any) => {
+    event.preventDefault();
+    setOpenFeedDialog(false);
   };
 
   const handleSnackbarClose = (event: any) => {
@@ -282,6 +272,34 @@ export const App:React.FC<{}> = () => {
     };
   }, []);
 
+  useEffect(() => {
+    let contract: any;
+    const onNewLine = (from: string, timestamp: any, line: string) => {
+      setAllLines((prevState: any[]) => [
+        ...prevState,
+        {
+          address: from,
+          timestamp: new Date(timestamp * 1000),
+          line: line,
+        },
+      ]);
+    };
+
+    if (window.ethereum && contractAddress) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+
+      contract = new ethers.Contract(contractAddress, contractABI, signer);
+      contract.on("NewPickUpLine", onNewLine);
+    }
+
+    return () => {
+      if (contract) {
+        contract.off("NewPickUpLine", onNewLine);
+      }
+    };
+  }, []);
+
   return (
     <div className="mainContainer">
       <Banner />
@@ -293,6 +311,7 @@ export const App:React.FC<{}> = () => {
         message={message}
         openWalletDialog={openWalletDialog}
         openShareDialog={openShareDialog}
+        openFeedDialog={openFeedDialog}
         openSnackbar={openSnackbar}
         currentAccount={currentAccount}
         connectWallet={connectWallet}
@@ -300,13 +319,16 @@ export const App:React.FC<{}> = () => {
         handleSubmit={handleSubmit}
         handleWalletDialogClose={handleWalletDialogClose}
         handleShare={handleShare}
+        handleFeedDialogClose={handleFeedDialogClose}
         handleShareDialogClose={handleShareDialogClose}
         handleSnackbarClose={handleSnackbarClose}
+        handleFeedExplore={handleFeedExplore}
+        handleGoogleAuth={handleGoogleAuth}
         shareOnTwitter={shareOnTwitter}
       />
       <Footer />
     </div>
   );
-}
+};
 
 export default App;
