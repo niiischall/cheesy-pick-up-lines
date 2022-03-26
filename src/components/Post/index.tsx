@@ -7,6 +7,7 @@ import Input from "../Input";
 export interface PostProps {
   error: string;
   loading: boolean;
+  submitSuccess: boolean;
   message: string;
   currentAccount: string;
   handleChange: Function;
@@ -18,6 +19,7 @@ export const Post: React.FC<PostProps> = ({
   error,
   loading,
   message,
+  submitSuccess,
   currentAccount,
   handleChange,
   handleSubmit,
@@ -41,11 +43,15 @@ export const Post: React.FC<PostProps> = ({
               <LinearProgress color="secondary" />
             </div>
           )}
-          <Input
-            message={message}
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
-          />
+          {!submitSuccess ? (
+            <Input
+              message={message}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+            />
+          ) : (
+            <p className="error-message">HODL! You're in for ETH Airdrop.</p>
+          )}
           {error && <p className="error-message">{error}</p>}
         </div>
       ) : (
@@ -69,7 +75,7 @@ export const Post: React.FC<PostProps> = ({
             }}
             color="secondary"
           >
-            {window.ethereum ? "Connect Wallet" : "Get A Wallet" }
+            {window.ethereum ? "Connect Wallet" : "Get A Wallet"}
           </Button>
         </div>
       )}

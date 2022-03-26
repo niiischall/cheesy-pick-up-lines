@@ -15,6 +15,7 @@ export interface LayoutProps {
   openWalletDialog: boolean;
   openShareDialog: boolean;
   openSnackbar: boolean;
+  submitSuccess: boolean;
   message: string;
   currentAccount: string;
   connectWallet: Function;
@@ -36,6 +37,7 @@ export const Layout: React.FC<LayoutProps> = ({
   openWalletDialog,
   openShareDialog,
   openSnackbar,
+  submitSuccess,
   currentAccount,
   connectWallet,
   handleChange,
@@ -64,6 +66,7 @@ export const Layout: React.FC<LayoutProps> = ({
           loading={loading}
           currentAccount={currentAccount}
           message={message}
+          submitSuccess={submitSuccess}
           connectWallet={connectWallet}
           handleChange={handleChange}
           handleSubmit={handleSubmit}

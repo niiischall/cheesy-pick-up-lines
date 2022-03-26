@@ -2,8 +2,9 @@ import { useEffect, useState, useCallback } from "react";
 import { ethers } from "ethers";
 import ReactGA from "react-ga";
 import { onSnapshot, collection } from "@firebase/firestore";
-import moment from "moment";
 import { doc, setDoc } from "@firebase/firestore";
+import moment from "moment";
+import confetti from "canvas-confetti";
 
 import Layout from "./containers/Layout";
 import Header from "./components/Header";
@@ -23,12 +24,15 @@ declare global {
 const contractAddress = "0x3740805a2A54a8C8A60faa3fD89A7840f71e3505";
 const contractABI = abi.abi;
 ReactGA.initialize("G-36EJ961NWW", { debug: true });
+const confettiDuration = 5 * 1000;
+const confettiEnd = Date.now() + confettiDuration;
 
 export const App: React.FC<{}> = () => {
   const [currentAccount, setCurrentAccount] = useState("");
   const [allLines, setAllLines] = useState<any[]>([]);
   const [message, setMessage] = useState<string>("");
 
+  const [submitSuccess, setSubmitSuccess] = useState<boolean>(false);
   const [twitterShare, setTwitterShare] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -45,6 +49,7 @@ export const App: React.FC<{}> = () => {
   const pickup = async () => {
     try {
       setError("");
+      setSubmitSuccess(false);
       ReactGA.event({
         category: "WEBSITE_INTERACTION",
         action: "POST_LINE",
@@ -68,6 +73,7 @@ export const App: React.FC<{}> = () => {
           timestamp: moment().format(),
         });
         setLoading(false);
+        setSubmitSuccess(true);
         setMessage("");
       }
     } catch (error: any) {
@@ -105,7 +111,7 @@ export const App: React.FC<{}> = () => {
           const nextInSecond = moment(y.timestamp).date();
           const firstInSecond = moment(x.timestamp).date();
           return nextInSecond - firstInSecond;
-        })
+        });
         setAllLines(linesCleaned);
       } else {
         console.log("Ethereum object doesn't exist!");
@@ -218,6 +224,26 @@ export const App: React.FC<{}> = () => {
     setOpenSnackbar(true);
   };
 
+  const handleConfetti = useCallback(() => {
+    confetti({
+      particleCount: 5,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 }
+    });
+    confetti({
+      particleCount: 5,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 }
+    });
+  
+    // keep going until we are out of time
+    if (Date.now() < confettiEnd) {
+      requestAnimationFrame(handleConfetti);
+    }
+  },[]);
+
   useEffect(() => {
     checkIfWalletIsConnected();
   }, [checkIfWalletIsConnected]);
@@ -305,12 +331,18 @@ export const App: React.FC<{}> = () => {
             const nextInSecond = moment(y.timestamp).date();
             const firstInSecond = moment(x.timestamp).date();
             return nextInSecond - firstInSecond;
-          })
+          });
           setAllLines(db);
         }
       });
     }
   }, [currentAccount]);
+
+  useEffect(() => {
+    if(submitSuccess) {
+      handleConfetti();
+    }
+  }, [submitSuccess, handleConfetti]);
 
   return (
     <div className="mainContainer">
@@ -321,6 +353,7 @@ export const App: React.FC<{}> = () => {
         error={error}
         loading={loading}
         message={message}
+        submitSuccess={submitSuccess}
         openWalletDialog={openWalletDialog}
         openShareDialog={openShareDialog}
         openSnackbar={openSnackbar}
