@@ -151,10 +151,6 @@ export const App: React.FC<{}> = () => {
     event.preventDefault();
   };
 
-  const handleGoogleAuth = (event: any) => {
-    event.preventDefault();
-  };
-
   const handleChange = (event: any) => {
     setMessage(event.target.value);
   };
