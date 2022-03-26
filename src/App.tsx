@@ -16,7 +16,7 @@ declare global {
   }
 }
 
-const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+const contractAddress = "0x3740805a2A54a8C8A60faa3fD89A7840f71e3505";
 const contractABI = abi.abi;
 ReactGA.initialize("G-36EJ961NWW", { debug: true });
 
