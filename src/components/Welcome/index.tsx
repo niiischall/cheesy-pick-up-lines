@@ -65,23 +65,6 @@ export const Welcome: React.FC<WelcomeProps> = ({
             alt="Intense Feeling"
           />
         </div>
-        <div className="wallet-connect">
-          <Button
-            variant="contained"
-            startIcon={<Plug size={32} weight="light" />}
-            onClick={() => connectWallet()}
-            style={{
-              width: 250,
-              height: 64,
-              margin: "0px auto",
-              fontFamily: "Poppins",
-              fontWeight: 500,
-            }}
-            color="secondary"
-          >
-            {!window.ethereum ? "Start A Post" : "Connect Wallet"}
-          </Button>
-        </div>
       </div>
     </div>
   );

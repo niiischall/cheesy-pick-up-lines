@@ -493,13 +493,18 @@ body {
   align-items: center;
 }
 
-.footer h2, .footer h3 {
+.footer h2 {
   color: #ffffff;
   text-align: center;
 }
 
+.footer h3 {
+  color: #c2c2c2;
+  text-align: center;
+}
+
 .footer a {
-  color: #ffffff;
+  color: #c2c2c2;
 }
 
 .footer-credit {
