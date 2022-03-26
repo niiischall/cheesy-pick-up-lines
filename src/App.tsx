@@ -70,7 +70,6 @@ export const App: React.FC<{}> = () => {
 
   const getLines = async () => {
     try {
-      setError("");
       ReactGA.event({
         category: "WEBSITE_INTERACTION",
         action: "GET_LINES",
@@ -98,7 +97,6 @@ export const App: React.FC<{}> = () => {
         console.log("Ethereum object doesn't exist!");
       }
     } catch (error) {
-      setError("Connect your wallet to see what's been 🧑‍🍳");
       console.log(error);
     }
   };
@@ -202,7 +200,6 @@ export const App: React.FC<{}> = () => {
 
   const handleShare = (event: any) => {
     event.preventDefault();
-    console.log(twitterShare);
     const add = twitterShare.address.substr(0, 7);
     navigator.clipboard.writeText(
       `🧀🧀🧀\n${twitterShare.line}\n🧀🧀🧀\n\n#pickuplines #${add}`

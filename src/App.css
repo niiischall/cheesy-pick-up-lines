@@ -30,7 +30,6 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 @media screen and (max-width: 820px) {
@@ -100,7 +99,7 @@ body {
   text-align: center;
   font-size: 56px;
   font-weight: 600;
-  color: #fd746c;
+  color: #d1495b;
   margin: 24px 0px 16px 0px;
 }
 
@@ -147,13 +146,13 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 100px 50px;
+  margin: 50px;
 }
 
 @media screen and (max-width: 1200px) {
   .bio-section {
     flex-direction: column;
-    margin: 100px 0px;
+    margin: 50px 0px;
   }
 }
 
@@ -194,11 +193,107 @@ body {
   }
 }
 
+.post-tab {
+  min-height: 75vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .post-tab {
+    flex-direction: column;
+  }
+}
+
+.post-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@media screen and (max-width: 1200px) {
+  .post-cta {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.post-heading {
+  font-size: 56px;
+  font-weight: 600;
+  color: #a1a1a1;
+}
+
+@media screen and (max-width: 400px) {
+  .post-heading {
+    font-size: 40px;
+  }
+}
+
+.post-heading-strong {
+  color: #d1495b;
+}
+
+.post-content {
+  width: 500px;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.post-content-break {
+  display: none;
+}
+
+@media screen and (max-width: 525px) {
+  .post-content {
+    width: 100%;
+  }
+  .post-content-break {
+    display: block;
+  }
+}
+
+.post-image {
+  width: 600px;
+  height: 500px;
+}
+
+@media screen and (max-width: 600px) {
+  .post-image {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.feed-tab {
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.feed-heading {
+  display: flex;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.feed-heading h3 {
+  color: #a1a1a1;
+  font-size: 28px;
+  margin-left: 10px;
+}
+
+.feed-emphasis {
+  color: #d1495b;
+}
+
 .error-message {
   color: #d1495b;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 700;
-  text-align: center;
+  text-align: left;
   margin: 24px 0px;
 }
 
@@ -258,15 +353,22 @@ body {
 
 .form-box {
   color: #ffffff;
-  margin: 28px 16px;
+  margin: 28px 0px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+@media screen and (max-width: 500px) {
+  .form-box {
+    width: 90%;
+    margin: 28px 0px;
+  }
+}
+
 .loader-container {
-  width: 200px;
-  margin: 24px auto;
+  width: 300px;
+  margin: 24px 0px;
 }
 
 .message-container {
@@ -384,17 +486,25 @@ body {
   background-color: #323232;
   width: 100%;
   height: 300px;
+  margin-top: 24px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.footer h3 {
+.footer h2, .footer h3 {
   color: #ffffff;
+  text-align: center;
 }
 
 .footer a {
   color: #ffffff;
+}
+
+.footer-credit {
+  display: flex;
+  margin-top: 14px;
 }
 
 .shownews {

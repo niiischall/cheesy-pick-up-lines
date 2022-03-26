@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import { Binoculars, HeartStraight } from "phosphor-react";
+import { Plug } from "phosphor-react";
 
 export interface WelcomeProps {
   connectWallet: Function;
@@ -14,36 +14,6 @@ export const Welcome: React.FC<WelcomeProps> = ({
   return (
     <div className="welcome-container">
       <div className="wallet-connect">
-        <div className="button-container">
-          <Button
-            variant="contained"
-            startIcon={<Binoculars size={32} weight="light" />}
-            onClick={(event: any) => handleFeedExplore(event)}
-            style={{
-              width: 250,
-              height: 64,
-              fontFamily: "Poppins",
-              fontWeight: 700,
-            }}
-            color="primary"
-          >
-            Explore Feed
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<HeartStraight size={32} weight="light" />}
-            onClick={() => connectWallet()}
-            style={{
-              width: 250,
-              height: 64,
-              fontFamily: "Poppins",
-              fontWeight: 700,
-            }}
-            color="secondary"
-          >
-            {!window.ethereum ? "Shoot a line" : "Connect Wallet"}
-          </Button>
-        </div>
         <p>
           It's free.
           <br className="tagline" /> It's cupid.
@@ -98,7 +68,7 @@ export const Welcome: React.FC<WelcomeProps> = ({
         <div className="wallet-connect">
           <Button
             variant="contained"
-            startIcon={<HeartStraight size={32} weight="light" />}
+            startIcon={<Plug size={32} weight="light" />}
             onClick={() => connectWallet()}
             style={{
               width: 250,

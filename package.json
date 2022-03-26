@@ -15,6 +15,7 @@
     "@types/node": "^16.11.26",
     "@types/react": "^17.0.40",
     "@types/react-dom": "^17.0.13",
+    "canvas-confetti": "^1.5.1",
     "ethers": "^5.6.1",
     "moment": "^2.29.1",
     "phosphor-react": "^1.4.1",

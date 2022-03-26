@@ -1,9 +1,9 @@
-import React from "react";
-import { LinearProgress } from "@material-ui/core";
+import React, { useState } from "react";
 
 import Welcome from "../components/Welcome";
-import Input from "../components/Input";
-import Cards from "../components/Cards";
+import Post from "../components/Post";
+import Feed from "../components/Feed";
+import Tabs from "../components/Tabs";
 import Snackbar from "../components/Snackbar";
 import ConnectWallletDialog from "../components/Dialogs/ConnectWalletDialog";
 import ShareQuoteDialog from "../components/Dialogs/ShareQuoteDialog";
@@ -47,28 +47,44 @@ export const Layout: React.FC<LayoutProps> = ({
   handleFeedExplore,
   shareOnTwitter,
 }) => {
+  const [currentTab, setCurrentTab] = useState<any>(null);
+
+  const handleTabChange = (event: any, newValue: number) => {
+    setCurrentTab(newValue);
+  };
+
+  const renderTabs = () => {
+    let tab: any = null;
+    if (currentTab === 1) {
+      tab = <Feed allLines={allLines} shareOnTwitter={shareOnTwitter} />;
+    } else if (currentTab === 2) {
+      tab = (
+        <Post
+          error={error}
+          loading={loading}
+          currentAccount={currentAccount}
+          message={message}
+          connectWallet={connectWallet}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+        />
+      );
+    } else {
+      tab = null;
+    }
+    return tab;
+  };
+
   return (
     <main className="dataContainer">
-      {!currentAccount ? (
+      <Tabs handleTabChange={handleTabChange} />
+      {currentTab ? (
+        renderTabs()
+      ) : (
         <Welcome
           connectWallet={connectWallet}
           handleFeedExplore={handleFeedExplore}
         />
-      ) : (
-        <Input
-          message={message}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-        />
-      )}
-      {loading && (
-        <div className="loader-container">
-          <LinearProgress color="secondary" />
-        </div>
-      )}
-      {error && <p className="error-message">{error}</p>}
-      {allLines.length > 0 && (
-        <Cards allLines={allLines} shareOnTwitter={shareOnTwitter} />
       )}
       <Snackbar
         openSnackbar={openSnackbar}
