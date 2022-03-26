@@ -69,7 +69,7 @@ export const Post: React.FC<PostProps> = ({
             }}
             color="secondary"
           >
-            Connect Wallet
+            {window.ethereum ? "Connect Wallet" : "Get A Wallet" }
           </Button>
         </div>
       )}

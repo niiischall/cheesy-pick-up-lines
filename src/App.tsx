@@ -1,6 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import { ethers } from "ethers";
 import ReactGA from "react-ga";
+import { onSnapshot, collection } from "@firebase/firestore";
+import moment from "moment";
+import { doc, setDoc } from "@firebase/firestore";
 
 import Layout from "./containers/Layout";
 import Header from "./components/Header";
@@ -8,6 +11,7 @@ import Banner from "./components/Banner";
 import Footer from "./components/Footer";
 
 import "./App.css";
+import db from "./utils/services";
 import abi from "./utils/PickUpLines.json";
 
 declare global {
@@ -58,6 +62,11 @@ export const App: React.FC<{}> = () => {
         setLoading(true);
         let contractTxn = await contract.newLine(message, { gasLimit: 300000 });
         await contractTxn.wait();
+        await setDoc(doc(db, "pickuplines", currentAccount), {
+          line: message,
+          address: currentAccount,
+          timestamp: moment().format(),
+        });
         setLoading(false);
         setMessage("");
       }
@@ -92,6 +101,11 @@ export const App: React.FC<{}> = () => {
             line: line.line,
           });
         });
+        linesCleaned.sort((x: any, y: any) => {
+          const nextInSecond = moment(y.timestamp).date();
+          const firstInSecond = moment(x.timestamp).date();
+          return nextInSecond - firstInSecond;
+        })
         setAllLines(linesCleaned);
       } else {
         console.log("Ethereum object doesn't exist!");
@@ -280,6 +294,23 @@ export const App: React.FC<{}> = () => {
       }
     };
   }, []);
+
+  //Check for realtime database updates for all the lines.
+  useEffect(() => {
+    if (!window.ethereum || !currentAccount) {
+      onSnapshot(collection(db, "pickuplines"), (snapshot: any) => {
+        let db = snapshot.docs.map((doc: any) => doc.data());
+        if (db.length > 0) {
+          db.sort((x: any, y: any) => {
+            const nextInSecond = moment(y.timestamp).date();
+            const firstInSecond = moment(x.timestamp).date();
+            return nextInSecond - firstInSecond;
+          })
+          setAllLines(db);
+        }
+      });
+    }
+  }, [currentAccount]);
 
   return (
     <div className="mainContainer">

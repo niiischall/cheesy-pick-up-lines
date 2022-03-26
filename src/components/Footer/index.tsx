@@ -1,7 +1,5 @@
 import React from "react";
 
-import { TwitterLogo } from "phosphor-react";
-
 export const Footer: React.FC<{}> = () => {
   return (
     <footer className="footer">

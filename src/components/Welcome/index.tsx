@@ -1,6 +1,4 @@
 import React from "react";
-import { Button } from "@material-ui/core";
-import { Plug } from "phosphor-react";
 
 export interface WelcomeProps {
   connectWallet: Function;

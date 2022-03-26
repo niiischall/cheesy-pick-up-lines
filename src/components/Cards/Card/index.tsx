@@ -15,7 +15,6 @@ export const Card: React.FC<CardProps> = ({
 }) => {
   const d = new Date(line.timestamp.toString());
   const time = moment.utc(d).local().startOf("seconds").fromNow();
-
   return (
     <div className="message-section">
       <div className="message-box">
