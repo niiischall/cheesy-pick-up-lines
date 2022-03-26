@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import { Binoculars, Plugs } from "phosphor-react";
+import { Binoculars, HeartStraight } from "phosphor-react";
 
 export interface WelcomeProps {
   connectWallet: Function;
@@ -31,7 +31,7 @@ export const Welcome: React.FC<WelcomeProps> = ({
           </Button>
           <Button
             variant="contained"
-            startIcon={<Plugs size={32} weight="light" />}
+            startIcon={<HeartStraight size={32} weight="light" />}
             onClick={() => connectWallet()}
             style={{
               width: 250,
@@ -41,7 +41,7 @@ export const Welcome: React.FC<WelcomeProps> = ({
             }}
             color="secondary"
           >
-            {!window.ethereum ? "Start A Post" : "Connect Wallet"}
+            {!window.ethereum ? "Shoot a line" : "Connect Wallet"}
           </Button>
         </div>
         <p>
@@ -98,7 +98,7 @@ export const Welcome: React.FC<WelcomeProps> = ({
         <div className="wallet-connect">
           <Button
             variant="contained"
-            startIcon={<Plugs size={32} weight="light" />}
+            startIcon={<HeartStraight size={32} weight="light" />}
             onClick={() => connectWallet()}
             style={{
               width: 250,

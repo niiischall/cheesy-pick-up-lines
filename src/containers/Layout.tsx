@@ -7,16 +7,13 @@ import Cards from "../components/Cards";
 import Snackbar from "../components/Snackbar";
 import ConnectWallletDialog from "../components/Dialogs/ConnectWalletDialog";
 import ShareQuoteDialog from "../components/Dialogs/ShareQuoteDialog";
-import FeedDialog from "../components/Dialogs/FeedDialog";
 
 export interface LayoutProps {
   allLines: any[];
   error: string;
-  feedUser: any;
   loading: boolean;
   openWalletDialog: boolean;
   openShareDialog: boolean;
-  openFeedDialog: boolean;
   openSnackbar: boolean;
   message: string;
   currentAccount: string;
@@ -24,8 +21,6 @@ export interface LayoutProps {
   handleChange: Function;
   handleSubmit: Function;
   handleShare: Function;
-  handleGoogleAuth: Function;
-  handleFeedDialogClose: Function;
   handleShareDialogClose: Function;
   handleWalletDialogClose: Function;
   handleSnackbarClose: Function;
@@ -36,20 +31,16 @@ export interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = ({
   allLines,
   error,
-  feedUser,
   loading,
   message,
   openWalletDialog,
   openShareDialog,
-  openFeedDialog,
   openSnackbar,
   currentAccount,
   connectWallet,
   handleChange,
   handleSubmit,
   handleShare,
-  handleGoogleAuth,
-  handleFeedDialogClose,
   handleWalletDialogClose,
   handleSnackbarClose,
   handleShareDialogClose,
@@ -76,13 +67,13 @@ export const Layout: React.FC<LayoutProps> = ({
         </div>
       )}
       {error && <p className="error-message">{error}</p>}
+      {allLines.length > 0 && (
+        <Cards allLines={allLines} shareOnTwitter={shareOnTwitter} />
+      )}
       <Snackbar
         openSnackbar={openSnackbar}
         handleSnackbarClose={handleSnackbarClose}
       />
-      {allLines.length > 0 && (
-        <Cards allLines={allLines} shareOnTwitter={shareOnTwitter} />
-      )}
       <ConnectWallletDialog
         open={openWalletDialog}
         onClose={handleWalletDialogClose}
@@ -91,11 +82,6 @@ export const Layout: React.FC<LayoutProps> = ({
         open={openShareDialog}
         onShare={handleShare}
         onClose={handleShareDialogClose}
-      />
-      <FeedDialog
-        open={openFeedDialog}
-        onAuth={handleGoogleAuth}
-        onClose={handleFeedDialogClose}
       />
     </main>
   );
