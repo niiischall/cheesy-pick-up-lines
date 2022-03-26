@@ -1,6 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import { ethers } from "ethers";
 import ReactGA from "react-ga";
+import { initializeApp } from "@firebase/app";
+import { getAnalytics } from "@firebase/analytics";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "@firebase/auth";
 
 import Layout from "./containers/Layout";
 import Header from "./components/Header";
@@ -8,7 +11,7 @@ import Banner from "./components/Banner";
 import Footer from "./components/Footer";
 
 import "./App.css";
-import { googleAuthHelper } from "./utils/services";
+import { firebaseConfig } from "./utils/services";
 import abi from "./utils/PickUpLines.json";
 
 declare global {
@@ -19,13 +22,15 @@ declare global {
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 const contractABI = abi.abi;
-
+const app = initializeApp(firebaseConfig);
+getAnalytics(app);
 ReactGA.initialize("G-36EJ961NWW", { debug: true });
 
 export const App: React.FC<{}> = () => {
   const [currentAccount, setCurrentAccount] = useState("");
   const [allLines, setAllLines] = useState<any[]>([]);
   const [message, setMessage] = useState<string>("");
+  const [feedUser, setFeedUser] = useState<any>(null);
 
   const [twitterShare, setTwitterShare] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -159,8 +164,20 @@ export const App: React.FC<{}> = () => {
 
   const handleGoogleAuth = (event: any) => {
     event.preventDefault();
-    console.log("Google Auth!");
-    googleAuthHelper();
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        if (credential) {
+          const user = result.user;
+          setFeedUser(user);
+        }
+      })
+      .catch((error) => {
+        console.log("Error:");
+        console.log(error);
+      });
     setOpenFeedDialog(false);
   };
 
@@ -306,6 +323,7 @@ export const App: React.FC<{}> = () => {
       <Header />
       <Layout
         allLines={allLines}
+        feedUser={feedUser}
         error={error}
         loading={loading}
         message={message}

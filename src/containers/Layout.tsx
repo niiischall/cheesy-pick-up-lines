@@ -12,6 +12,7 @@ import FeedDialog from "../components/Dialogs/FeedDialog";
 export interface LayoutProps {
   allLines: any[];
   error: string;
+  feedUser: any;
   loading: boolean;
   openWalletDialog: boolean;
   openShareDialog: boolean;
@@ -35,6 +36,7 @@ export interface LayoutProps {
 export const Layout: React.FC<LayoutProps> = ({
   allLines,
   error,
+  feedUser,
   loading,
   message,
   openWalletDialog,
