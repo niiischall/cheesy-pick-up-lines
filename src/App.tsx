@@ -107,11 +107,6 @@ export const App: React.FC<{}> = () => {
             line: line.line,
           });
         });
-        linesCleaned.sort((x: any, y: any) => {
-          const nextInSecond = moment(y.timestamp).date();
-          const firstInSecond = moment(x.timestamp).date();
-          return nextInSecond - firstInSecond;
-        });
         setAllLines(linesCleaned);
       } else {
         console.log("Ethereum object doesn't exist!");
@@ -328,8 +323,8 @@ export const App: React.FC<{}> = () => {
         let db = snapshot.docs.map((doc: any) => doc.data());
         if (db.length > 0) {
           db.sort((x: any, y: any) => {
-            const nextInSecond = moment(y.timestamp).date();
-            const firstInSecond = moment(x.timestamp).date();
+            const nextInSecond:any = moment(y.timestamp).toDate();
+            const firstInSecond:any = moment(x.timestamp).toDate();
             return nextInSecond - firstInSecond;
           });
           setAllLines(db);
