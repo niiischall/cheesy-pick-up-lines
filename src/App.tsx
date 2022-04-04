@@ -1,9 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { ethers } from "ethers";
 import ReactGA from "react-ga";
-import { onSnapshot, collection } from "@firebase/firestore";
-import { doc, setDoc } from "@firebase/firestore";
-import moment from "moment";
 import confetti from "canvas-confetti";
 
 import Layout from "./containers/Layout";
@@ -12,7 +9,6 @@ import Banner from "./components/Banner";
 import Footer from "./components/Footer";
 
 import "./App.css";
-import db from "./utils/services";
 import abi from "./utils/PickUpLines.json";
 
 declare global {
@@ -67,11 +63,6 @@ export const App: React.FC<{}> = () => {
         setLoading(true);
         let contractTxn = await contract.newLine(message, { gasLimit: 300000 });
         await contractTxn.wait();
-        await setDoc(doc(db, "pickuplines", currentAccount), {
-          line: message,
-          address: currentAccount,
-          timestamp: moment().format(),
-        });
         setLoading(false);
         setSubmitSuccess(true);
         setMessage("");
@@ -315,23 +306,6 @@ export const App: React.FC<{}> = () => {
       }
     };
   }, []);
-
-  //Check for realtime database updates for all the lines.
-  useEffect(() => {
-    if (!window.ethereum || !currentAccount) {
-      onSnapshot(collection(db, "pickuplines"), (snapshot: any) => {
-        let db = snapshot.docs.map((doc: any) => doc.data());
-        if (db.length > 0) {
-          db.sort((x: any, y: any) => {
-            const nextInSecond:any = moment(y.timestamp).toDate();
-            const firstInSecond:any = moment(x.timestamp).toDate();
-            return nextInSecond - firstInSecond;
-          });
-          setAllLines(db);
-        }
-      });
-    }
-  }, [currentAccount]);
 
   useEffect(() => {
     if(submitSuccess) {

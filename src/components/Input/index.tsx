@@ -47,6 +47,7 @@ export const Input: React.FC<InputProps> = ({
   handleChange,
   message,
 }) => {
+  console.log(message);
   return (
     <form className="form-box" onSubmit={(event: any) => handleSubmit(event)}>
       <CustomTextField
@@ -58,12 +59,18 @@ export const Input: React.FC<InputProps> = ({
         variant="outlined"
         style={{ width: 320 }}
         onChange={(event) => handleChange(event)}
+        required
       />
       <IconButton
         type="submit"
         style={{ marginLeft: 10, backgroundColor: "transparent" }}
+        disabled={!message}
       >
-        <Heart size={32} weight="fill" color="#d1495b" />
+        {message ? (
+          <Heart size={32} weight="fill" color="#d1495b" />
+        ) : (
+          <Heart size={32} weight="fill" color="#c2c2c2" />
+        )}
       </IconButton>
     </form>
   );
