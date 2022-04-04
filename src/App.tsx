@@ -1,7 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { ethers } from "ethers";
 import ReactGA from "react-ga";
 import confetti from "canvas-confetti";
+import { AbiItem } from 'web3-utils';
+import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 
 import Layout from "./containers/Layout";
 import Header from "./components/Header";
@@ -18,6 +20,7 @@ declare global {
 }
 
 const contractAddress = "0x3740805a2A54a8C8A60faa3fD89A7840f71e3505";
+const alchemyAddress = 'https://eth-rinkeby.alchemyapi.io/v2/IcCFxDBw6Fb-Cbgsdt-hLFSZar5Inmm-';
 const contractABI = abi.abi;
 ReactGA.initialize("G-36EJ961NWW", { debug: true });
 const confettiDuration = 5 * 1000;
@@ -105,6 +108,22 @@ export const App: React.FC<{}> = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const getLinesFromAlch = async () => {
+    const web3 = createAlchemyWeb3(alchemyAddress);
+    const Contract: any = new web3.eth.Contract(contractABI as AbiItem[], contractAddress)
+
+    const lines = await Contract.methods.getAllLines().call();
+    let linesCleaned: any[] = [];
+    lines.forEach((line: any) => {
+      linesCleaned.push({
+        address: line.writer,
+        timestamp: new Date(line.timestamp * 1000),
+        line: line.line,
+      });
+    });
+    setAllLines(linesCleaned);
   };
 
   const checkIfWalletIsConnected = useCallback(async () => {
@@ -215,29 +234,30 @@ export const App: React.FC<{}> = () => {
       particleCount: 5,
       angle: 60,
       spread: 55,
-      origin: { x: 0 }
+      origin: { x: 0 },
     });
     confetti({
       particleCount: 5,
       angle: 120,
       spread: 55,
-      origin: { x: 1 }
+      origin: { x: 1 },
     });
-  
+
     // keep going until we are out of time
     if (Date.now() < confettiEnd) {
       requestAnimationFrame(handleConfetti);
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
     checkIfWalletIsConnected();
   }, [checkIfWalletIsConnected]);
 
   useEffect(() => {
-    const { ethereum } = window;
-    if (ethereum) {
+    if (currentAccount) {
       getLines();
+    } else {
+      getLinesFromAlch();
     }
   }, [currentAccount]);
 
@@ -308,7 +328,7 @@ export const App: React.FC<{}> = () => {
   }, []);
 
   useEffect(() => {
-    if(submitSuccess) {
+    if (submitSuccess) {
       handleConfetti();
     }
   }, [submitSuccess, handleConfetti]);
