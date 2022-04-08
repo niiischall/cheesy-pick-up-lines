@@ -52,14 +52,13 @@ export const Input: React.FC<InputProps> = ({
     <form className="form-box" onSubmit={(event: any) => handleSubmit(event)}>
       <CustomTextField
         id="message-field"
-        label="Get super cheesy!"
+        label="Write something..."
         multiline
         maxRows={4}
         value={message}
         variant="outlined"
         style={{ width: 320 }}
         onChange={(event) => handleChange(event)}
-        required
       />
       <IconButton
         type="submit"

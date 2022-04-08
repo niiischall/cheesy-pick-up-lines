@@ -1,12 +1,17 @@
 import React from "react";
 
+import { GeekyAntsLogo } from '../../utils/Icons';
+
 export const Footer: React.FC<{}> = () => {
   return (
     <footer className="footer">
-      <h2>We're live on Ethereum Blockchain. 🎉</h2>
+      <div className="footer-header">
+        <h3 className="footer-heading">Supported By</h3>
+        <GeekyAntsLogo />
+      </div>
       <div className="footer-credit">
         <h3 style={{ marginRight: 5 }}>Built by </h3>
-        <h3>
+        <h4>
           <a
             href="https://twitter.com/niiischall"
             target="_blank"
@@ -14,7 +19,7 @@ export const Footer: React.FC<{}> = () => {
           >
             @niiischall
           </a>
-        </h3>
+        </h4>
       </div>
     </footer>
   );

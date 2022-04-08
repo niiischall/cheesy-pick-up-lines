@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import ReactGA from "react-ga";
 import confetti from "canvas-confetti";
 import { AbiItem } from 'web3-utils';
+import moment from "moment";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 
 import Layout from "./containers/Layout";
@@ -101,6 +102,11 @@ export const App: React.FC<{}> = () => {
             line: line.line,
           });
         });
+        linesCleaned.sort((x: any, y: any) => {
+          const nextInSecond:any = moment(y.timestamp).toDate();
+          const firstInSecond:any = moment(x.timestamp).toDate();
+          return nextInSecond - firstInSecond;
+        });
         setAllLines(linesCleaned);
       } else {
         console.log("Ethereum object doesn't exist!");
@@ -122,6 +128,11 @@ export const App: React.FC<{}> = () => {
         timestamp: new Date(line.timestamp * 1000),
         line: line.line,
       });
+    });
+    linesCleaned.sort((x: any, y: any) => {
+      const nextInSecond:any = moment(y.timestamp).toDate();
+      const firstInSecond:any = moment(x.timestamp).toDate();
+      return nextInSecond - firstInSecond;
     });
     setAllLines(linesCleaned);
   };

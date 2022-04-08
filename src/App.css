@@ -510,6 +510,11 @@ body {
 .footer-credit {
   display: flex;
   margin-top: 14px;
+  align-items: center;
+}
+
+.footer-credit a {
+  text-decoration: none;
 }
 
 .shownews {
@@ -571,4 +576,15 @@ body {
   100% {
     clip-path: polygon(0px 0px, 100% 0, 100% 100%, 0px 100%);
   }
+}
+
+.footer-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 350px;
+}
+
+.footer-heading {
+  width: 300px;
 }
