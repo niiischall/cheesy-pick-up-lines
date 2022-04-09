@@ -108,6 +108,7 @@ export const App: React.FC<{}> = () => {
           const firstInSecond: any = moment(x.timestamp).toDate();
           return nextInSecond - firstInSecond;
         });
+        linesCleaned = linesCleaned.filter((line: any) => line.line);
         setAllLines(linesCleaned);
       } else {
         console.log("Ethereum object doesn't exist!");
@@ -138,6 +139,7 @@ export const App: React.FC<{}> = () => {
       const firstInSecond: any = moment(x.timestamp).toDate();
       return nextInSecond - firstInSecond;
     });
+    linesCleaned = linesCleaned.filter((line: any) => line.line);
     setAllLines(linesCleaned);
   };
 

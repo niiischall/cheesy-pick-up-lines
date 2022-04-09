@@ -5,11 +5,17 @@ export const Footer: React.FC<{}> = () => {
     <footer className="footer">
       <div className="footer-header">
         <h3 className="footer-heading">Supported By</h3>
-        <img
-          src="/assets/geekyants-logo.png"
-          className="geekyants-logo"
-          alt="GeekyAnts Logo"
-        />
+        <a
+          href="https://geekyants.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="/assets/geekyants-logo.png"
+            className="geekyants-logo"
+            alt="GeekyAnts Logo"
+          />
+        </a>
       </div>
       <div className="footer-credit">
         <h3 style={{ marginRight: 5 }}>Built by </h3>
