@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { ethers } from "ethers";
 import ReactGA from "react-ga";
 import confetti from "canvas-confetti";
-import { AbiItem } from 'web3-utils';
+import { AbiItem } from "web3-utils";
 import moment from "moment";
 import { createAlchemyWeb3 } from "@alch/alchemy-web3";
 
@@ -21,7 +21,8 @@ declare global {
 }
 
 const contractAddress = "0x3740805a2A54a8C8A60faa3fD89A7840f71e3505";
-const alchemyAddress = 'https://eth-rinkeby.alchemyapi.io/v2/IcCFxDBw6Fb-Cbgsdt-hLFSZar5Inmm-';
+const alchemyAddress =
+  "https://eth-rinkeby.alchemyapi.io/v2/IcCFxDBw6Fb-Cbgsdt-hLFSZar5Inmm-";
 const contractABI = abi.abi;
 ReactGA.initialize("G-36EJ961NWW", { debug: true });
 const confettiDuration = 5 * 1000;
@@ -103,8 +104,8 @@ export const App: React.FC<{}> = () => {
           });
         });
         linesCleaned.sort((x: any, y: any) => {
-          const nextInSecond:any = moment(y.timestamp).toDate();
-          const firstInSecond:any = moment(x.timestamp).toDate();
+          const nextInSecond: any = moment(y.timestamp).toDate();
+          const firstInSecond: any = moment(x.timestamp).toDate();
           return nextInSecond - firstInSecond;
         });
         setAllLines(linesCleaned);
@@ -118,7 +119,10 @@ export const App: React.FC<{}> = () => {
 
   const getLinesFromAlch = async () => {
     const web3 = createAlchemyWeb3(alchemyAddress);
-    const Contract: any = new web3.eth.Contract(contractABI as AbiItem[], contractAddress)
+    const Contract: any = new web3.eth.Contract(
+      contractABI as AbiItem[],
+      contractAddress
+    );
 
     const lines = await Contract.methods.getAllLines().call();
     let linesCleaned: any[] = [];
@@ -130,8 +134,8 @@ export const App: React.FC<{}> = () => {
       });
     });
     linesCleaned.sort((x: any, y: any) => {
-      const nextInSecond:any = moment(y.timestamp).toDate();
-      const firstInSecond:any = moment(x.timestamp).toDate();
+      const nextInSecond: any = moment(y.timestamp).toDate();
+      const firstInSecond: any = moment(x.timestamp).toDate();
       return nextInSecond - firstInSecond;
     });
     setAllLines(linesCleaned);
