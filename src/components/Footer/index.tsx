@@ -1,13 +1,15 @@
 import React from "react";
 
-import { GeekyAntsLogo } from '../../utils/Icons';
-
 export const Footer: React.FC<{}> = () => {
   return (
     <footer className="footer">
       <div className="footer-header">
         <h3 className="footer-heading">Supported By</h3>
-        <GeekyAntsLogo />
+        <img
+          src="/assets/geekyants-logo.png"
+          className="geekyants-logo"
+          alt="GeekyAnts Logo"
+        />
       </div>
       <div className="footer-credit">
         <h3 style={{ marginRight: 5 }}>Built by </h3>

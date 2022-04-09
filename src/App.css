@@ -514,6 +514,7 @@ body {
 }
 
 .footer-credit a {
+  color: #FFFFFF;
   text-decoration: none;
 }
 
@@ -580,11 +581,25 @@ body {
 
 .footer-header {
   display: flex;
+  justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 350px;
 }
 
-.footer-heading {
-  width: 300px;
+@media screen and (max-width: 400px) {
+  .footer-header {
+    flex-direction: column;
+  }
+}
+
+.geekyants-logo {
+  width: 200px;
+  height: auto;
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 400px) {
+  .geekyants-logo {
+    margin-left: 0px;
+  }
 }
