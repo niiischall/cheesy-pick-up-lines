@@ -8,7 +8,7 @@ export const Banner: React.FC<{}> = () => {
           New to Web3?{" "}
           <a
             className="shownews-link"
-            href="https://sassy-beast-257.notion.site/Web3-Apps-for-Dummies-104b941995a548838d8070937b0cc46c"
+            href="https://bit.ly/pickuplines-guide-new"
             target="_blank"
             rel="noopener noreferrer"
           >

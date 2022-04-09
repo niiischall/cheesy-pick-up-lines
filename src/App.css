@@ -103,6 +103,11 @@ body {
   margin: 24px 0px 16px 0px;
 }
 
+.header-link {
+  color: #ffffff;
+  font-weight: 600;
+}
+
 @media screen and (min-width: 420px) and (max-width: 820px) {
   .heading {
     font-size: 40px;

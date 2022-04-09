@@ -5,8 +5,17 @@ export const Header: React.FC<{}> = () => {
     <header className="header">
       <div className="super-header">
         <span>
-          Win ₹5000 worth of rewards! Shoot a pick up line before
-          <br className="super-header-break" /> 30th of April, 2022 🚀 
+          Win exciting {" "}
+          <a
+            className="header-link"
+            href="https://bit.ly/rewards-pickuplines"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Rewards!
+          </a>{" "}
+          Shoot a pick up line before
+          <br className="super-header-break" /> 30th of April, 2022 🚀
         </span>
       </div>
       <h1 className="heading">🧀 Pick Up Lines</h1>
