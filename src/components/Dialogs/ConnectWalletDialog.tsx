@@ -137,7 +137,7 @@ export const ConnectWalletDialog: React.FC<Props> = ({ open, onClose }) => {
             <span>New to Web3?</span>{" "}
             <a
               className="connect-wallet-learn"
-              href="https://sassy-beast-257.notion.site/Web3-Apps-for-Dummies-104b941995a548838d8070937b0cc46c"
+              href="https://bit.ly/pickuplines-guide-new"
               target="_blank"
               rel="noopener noreferrer"
             >
